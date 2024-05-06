@@ -42,10 +42,11 @@ def main():
     # Watch the PIN status every 1 second
     while True:
         # Check the status of the PIN
-        if GPIO.input(20) == False:
+        if GPIO.input(20) == True:
             print("Sunset")
-        if GPIO.input(21) == False:
+        if GPIO.input(21) == True:
             print("Sun behind Clouds")
+        print("Waiting... 1 second.")
         time.sleep(1)
 
 

@@ -35,5 +35,15 @@ GPIO21 - Sun behind clouds.
 ** 3.3-5V Operating range
 
 
+# Changes to Raspberry Pi OS
+## FIX error: externally-managed-environment
+hive@raspberrypi: cd /usr/lib/python3.11
+hive@raspberrypi:/usr/lib/python3.11 $ sudo rm EXTERNALLY-MANAGED
+
+## Fix RuntimeError: Cannot determine SOC peripheral base address
+This is a Raspberry Pi Device and the standard RPi isn't support for Python
+sudo apt remove python3-rpi.gpio
+pip3 install rpi-lgpio
+
 # History
 2024-05-06 Connect up 5v or 3.3v?

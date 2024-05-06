@@ -49,3 +49,8 @@ def main():
         if GPIO.input(21) == False:
             print("Sun behind Clouds")
         time.sleep(1)
+
+
+# call the main function
+if __name__ == "__main__":
+    main()

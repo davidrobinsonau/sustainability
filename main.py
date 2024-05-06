@@ -24,6 +24,9 @@ import subprocess
 import sys
 import os
 
+PI_HIGH = 1
+PI_LOW = 0
+
 
 def main():
     # Monitor GPIO20 - Sunset
@@ -42,9 +45,9 @@ def main():
     # Watch the PIN status every 1 second
     while True:
         # Check the status of the PIN
-        if GPIO.input(20) == True:
+        if GPIO.input(20) == PI_LOW:
             print("Sunset")
-        if GPIO.input(21) == True:
+        if GPIO.input(21) == PI_LOW:
             print("Sun behind Clouds")
         print("Waiting... 1 second.")
         time.sleep(1)

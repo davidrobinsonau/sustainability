@@ -30,6 +30,11 @@ PINs Used for Line Sensor
 GPIO20 - Sunset
 GPIO21 - Sun behind clouds.
 
+# Commands to remember for Raspberry Pi 5
+## List GPIO Pin information
+pinctrl
+
+
 # Equipment used in build
 * https://core-electronics.com.au/line-sensor-adjustable-threshold.html Sensor for Sun to know when Up and Behind Clouds.
 ** 3.3-5V Operating range
@@ -37,6 +42,7 @@ GPIO21 - Sun behind clouds.
 
 # Changes to Raspberry Pi OS
 ## FIX error: externally-managed-environment
+https://www.makeuseof.com/fix-pip-error-externally-managed-environment-linux/
 hive@raspberrypi: cd /usr/lib/python3.11
 hive@raspberrypi:/usr/lib/python3.11 $ sudo rm EXTERNALLY-MANAGED
 

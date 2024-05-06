@@ -30,12 +30,10 @@ def main():
     # GPIO21 - Sun behind clouds.
 
     # Set the GPIO mode
-    GPIO.setmode(GPIO.BCM)
+    GPIO.setmode(
+        GPIO.BCM
+    )  # The GPIO.BCM option means that you are referring to the pins by the "Broadcom SOC channel" number, these are the numbers after "GPIO".
     GPIO.setwarnings(False)
-
-    # Set the GPIO pins
-    GPIO.setup(20, GPIO.IN)
-    GPIO.setup(21, GPIO.IN)
 
     # Set the GPIO pins to pull up
     GPIO.setup(20, GPIO.IN, pull_up_down=GPIO.PUD_UP)

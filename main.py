@@ -24,6 +24,11 @@ import subprocess
 import sys
 import os
 
+# Import Pygame Library
+import pygame
+from pygame.locals import *
+
+
 PI_HIGH = 1
 PI_LOW = 0
 
@@ -38,9 +43,15 @@ def main():
     )  # The GPIO.BCM option means that you are referring to the pins by the "Broadcom SOC channel" number, these are the numbers after "GPIO".
     GPIO.setwarnings(False)
 
-    # Set the GPIO pins to pull up
+    # Set the Line Sensor GPIO pins to pull up
     GPIO.setup(20, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     GPIO.setup(21, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    # Set the Relay for Motors GPIO Pins to Output and set to HIGH
+    GPIO.setup(2, GPIO.OUT, initial=GPIO.HIGH)  # Water Turbine
+    GPIO.setup(3, GPIO.OUT, initial=GPIO.HIGH)  # Wind Turbine
+    # Set GPIO 19 and 26 to be an input for the 2 buttons
+    GPIO.setup(19, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(26, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
     # Watch the PIN status every 1 second
     while True:
@@ -48,7 +59,15 @@ def main():
         if GPIO.input(20) == PI_LOW:
             print("Sunset")
         if GPIO.input(21) == PI_LOW:
-            print("Sun behind Clouds")
+            print("Sun behind Clouds or Hill")
+        if GPIO.input(19) == PI_LOW:
+            print("Button 1 Pressed")
+            # Set the Relay for Water Motors GPIO Pins to LOW
+            GPIO.output(2, GPIO.LOW)
+        if GPIO.input(26) == PI_LOW:
+            print("Button 2 Pressed")
+            # Set the Relay for Wind Motors GPIO Pins to LOW
+            GPIO.output(3, GPIO.LOW)
         print("Waiting... 1 second.")
         time.sleep(1)
 

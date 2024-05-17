@@ -64,10 +64,16 @@ def main():
             print("Button 1 Pressed")
             # Set the Relay for Water Motors GPIO Pins to LOW
             GPIO.output(2, GPIO.LOW)
+        else:
+            # Set the Relay for Water Motors GPIO Pins to HIGH
+            GPIO.output(2, GPIO.HIGH)
         if GPIO.input(26) == PI_LOW:
             print("Button 2 Pressed")
             # Set the Relay for Wind Motors GPIO Pins to LOW
             GPIO.output(3, GPIO.LOW)
+        else:
+            # Set the Relay for Wind Motors GPIO Pins to HIGH
+            GPIO.output(3, GPIO.HIGH)
         print("Waiting... 1 second.")
         time.sleep(1)
 

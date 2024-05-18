@@ -38,6 +38,21 @@ WATER = 0  # 0 = No Water, 1 = LOW Water, 2 = Full Water
 WIND = 0  # 0 = No Wind, 1 = LOW Wind, 2 = Full Wind
 
 
+# Setup PyGame for Full screen
+def setup_pygame():
+    # Set the display to fullscreen
+    pygame.init()
+    pygame.mouse.set_visible(False)
+    pygame.display.set_mode((0, 0), FULLSCREEN)
+    pygame.display.set_caption("Sustainability Display")
+    pygame.font.init()
+    # Set the background color
+    screen = pygame.display.get_surface()
+    screen.fill((0, 0, 0))
+    pygame.display.flip()
+    return screen
+
+
 def main():
     # Monitor GPIO20 - Sunset
     # GPIO21 - Sun behind clouds.
@@ -62,6 +77,8 @@ def main():
     GPIO.setup(7, GPIO.OUT, initial=GPIO.LOW)
     GPIO.setup(8, GPIO.OUT, initial=GPIO.LOW)
     GPIO.setup(25, GPIO.OUT, initial=GPIO.LOW)
+    # Get Pygame setup
+    pygame_screen = setup_pygame()
 
     # Watch the PIN status every 1 second
     while True:
@@ -112,9 +129,9 @@ def main():
             GPIO.output(8, GPIO.HIGH)
             GPIO.output(25, GPIO.HIGH)
         elif SOLAR == 1:
-            print("Half Power - Turn 2 houses lights OFF")
+            print("Half Power - Turn 3 houses lights OFF")
             GPIO.output(1, GPIO.HIGH)
-            GPIO.output(7, GPIO.HIGH)
+            GPIO.output(7, GPIO.LOW)
             GPIO.output(8, GPIO.LOW)
             GPIO.output(25, GPIO.LOW)
         elif SOLAR == 2:

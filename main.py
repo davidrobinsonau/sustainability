@@ -53,6 +53,14 @@ def setup_pygame():
     return screen
 
 
+# Function to draw text on the screen in large font
+def draw_text(screen, text, x, y):
+    font = pygame.font.Font(None, 36)
+    text = font.render(text, 1, (255, 255, 255))
+    screen.blit(text, (x, y))
+    pygame.display.flip()
+
+
 def main():
     # Monitor GPIO20 - Sunset
     # GPIO21 - Sun behind clouds.
@@ -79,6 +87,8 @@ def main():
     GPIO.setup(25, GPIO.OUT, initial=GPIO.LOW)
     # Get Pygame setup
     pygame_screen = setup_pygame()
+    # Draw the text "Coming soon" on the screen
+    draw_text(pygame_screen, "Coming soon", 100, 100)
 
     # Watch the PIN status every 1 second
     while True:

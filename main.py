@@ -52,14 +52,34 @@ def main():
     # Set GPIO 19 and 26 to be an input for the 2 buttons
     GPIO.setup(19, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     GPIO.setup(26, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    # Set GPIO 1,7,8,25 to be outputs for the LEDS on the houses
+    GPIO.setup(1, GPIO.OUT, initial=GPIO.LOW)
+    GPIO.setup(7, GPIO.OUT, initial=GPIO.LOW)
+    GPIO.setup(8, GPIO.OUT, initial=GPIO.LOW)
+    GPIO.setup(25, GPIO.OUT, initial=GPIO.LOW)
 
     # Watch the PIN status every 1 second
     while True:
         # Check the status of the PIN
         if GPIO.input(20) == PI_LOW:
             print("Sunset")
-        if GPIO.input(21) == PI_LOW:
+            # Set all the houses to LOW
+            GPIO.output(1, GPIO.LOW)
+            GPIO.output(7, GPIO.LOW)
+            GPIO.output(8, GPIO.LOW)
+            GPIO.output(25, GPIO.LOW)
+        elif GPIO.input(21) == PI_LOW:
             print("Sun behind Clouds or Hill")
+            # Set 2 houses to LOW
+            GPIO.output(8, GPIO.LOW)
+            GPIO.output(25, GPIO.LOW)
+        else:
+            print("Sunrise - ALL Houses Lights ON")
+            # Set all the houses to HIGH
+            GPIO.output(1, GPIO.HIGH)
+            GPIO.output(7, GPIO.HIGH)
+            GPIO.output(8, GPIO.HIGH)
+            GPIO.output(25, GPIO.HIGH)
         if GPIO.input(19) == PI_LOW:
             print("Button 1 Pressed")
             # Set the Relay for Water Motors GPIO Pins to LOW

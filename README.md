@@ -37,13 +37,18 @@ PINs Used for Line Sensor
 6 Gnd to Line Sensor - Brown Wire
 GPIO2 - Water Turbine - RELAY LOW for ON
 GPIO3 - Wind Turbine - RELAY LOW for ON
+GPIO19 - Button 1
+GPIO26 - Button 2
 GPIO20 - Sunset
 GPIO21 - Sun behind clouds.
 
-- Hydro Light
-- Houses x 2 (batches of 2). Need Transister to drive them.
-- Hydro Power Relay (LOW ON)
-- Window Power Relay (LOW ON)
+GPIO25 - Forth set of House Lights
+GPIO8 - 3rd set of House Lights
+GPIO7 - 2nd set of House Lights
+GPIO1 - First set of House Lights
+
+- Hydro Light - Currently set to be always ON
+
 
 I need:
 11 x NPN Transisters to test on LED.

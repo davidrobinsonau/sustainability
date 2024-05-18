@@ -1,7 +1,7 @@
 # ~/.config/lxsession/LXDE-pi/autostart
 @chromium-browser --kiosk https://www.hivetasmania.com.au
 
-@lxterminal --geometry=1x1 -e /home/hive/Workspace/sustainability/main.py
+@lxterminal --geometry=1x1 -e /home/hive/Workspace/sustainability/start_game.sh
 
 @chromium-browser --kiosk --window-position=1920,0 --user-data-dir="/home/hive/Documents/Profiles/1" /home/hive/Downloads/62825_image-scaled.jpg
 

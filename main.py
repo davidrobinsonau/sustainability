@@ -55,10 +55,17 @@ def setup_pygame():
 
 # Function to draw text on the screen in large font
 def draw_text(screen, text, x, y):
-    font = pygame.font.Font(None, 36)
+    font = pygame.font.Font(None, 96)
     text = font.render(text, 1, (255, 255, 255))
     screen.blit(text, (x, y))
     pygame.display.flip()
+
+
+# Function to get the screen resolution using Pygame
+def get_screen_resolution():
+    # Get the screen resolution
+    screen = pygame.display.Info()
+    return (screen.current_w, screen.current_h)
 
 
 def main():
@@ -89,6 +96,8 @@ def main():
     pygame_screen = setup_pygame()
     # Draw the text "Coming soon" on the screen
     draw_text(pygame_screen, "Coming soon", 100, 100)
+    # Display the screen resolution on the display for debugging
+    draw_text(pygame_screen, str(get_screen_resolution()), 200, 200)
 
     # Watch the PIN status every 1 second
     while True:

@@ -106,7 +106,7 @@ def main():
             GPIO.output(8, GPIO.LOW)
             GPIO.output(25, GPIO.LOW)
         elif WATER > 0 or WIND > 0:
-            print("We have Wind or Water power" - "Turn all houses lights ON")
+            print("We have Wind or Water power - Turn all houses lights ON")
             GPIO.output(1, GPIO.HIGH)
             GPIO.output(7, GPIO.HIGH)
             GPIO.output(8, GPIO.HIGH)

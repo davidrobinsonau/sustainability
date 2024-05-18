@@ -32,6 +32,11 @@ from pygame.locals import *
 PI_HIGH = 1
 PI_LOW = 0
 
+# Game States
+SOLAR = 0  # 0 = No Sun, 1 = LOW Sunlight, 2 = Full Sun
+WATER = 0  # 0 = No Water, 1 = LOW Water, 2 = Full Water
+WIND = 0  # 0 = No Wind, 1 = LOW Wind, 2 = Full Wind
+
 
 def main():
     # Monitor GPIO20 - Sunset
@@ -64,36 +69,62 @@ def main():
         if GPIO.input(20) == PI_LOW:
             print("Sunset")
             # Set all the houses to LOW
-            GPIO.output(1, GPIO.LOW)
-            GPIO.output(7, GPIO.LOW)
-            GPIO.output(8, GPIO.LOW)
-            GPIO.output(25, GPIO.LOW)
+            SOLAR = 0
         elif GPIO.input(21) == PI_LOW:
             print("Sun behind Clouds or Hill")
-            # Set 2 houses to LOW
-            GPIO.output(8, GPIO.LOW)
-            GPIO.output(25, GPIO.LOW)
+            SOLAR = 1
         else:
-            print("Sunrise - ALL Houses Lights ON")
+            print("Sunrise")
             # Set all the houses to HIGH
-            GPIO.output(1, GPIO.HIGH)
-            GPIO.output(7, GPIO.HIGH)
-            GPIO.output(8, GPIO.HIGH)
-            GPIO.output(25, GPIO.HIGH)
+            SOLAR = 2
         if GPIO.input(19) == PI_LOW:
             print("Button 1 Pressed")
             # Set the Relay for Water Motors GPIO Pins to LOW
             GPIO.output(2, GPIO.LOW)
+            WATER = 2
+            # If
         else:
             # Set the Relay for Water Motors GPIO Pins to HIGH
             GPIO.output(2, GPIO.HIGH)
+            WATER = 0
         if GPIO.input(26) == PI_LOW:
             print("Button 2 Pressed")
             # Set the Relay for Wind Motors GPIO Pins to LOW
             GPIO.output(3, GPIO.LOW)
+            WIND = 2
         else:
             # Set the Relay for Wind Motors GPIO Pins to HIGH
             GPIO.output(3, GPIO.HIGH)
+            WIND = 0
+
+        # Display Houses Lights based on SOLAR, Hydro, and Wind power.
+        # Full Power
+        if SOLAR == 0 and WATER == 0 and WIND == 0:
+            print("No power - Turn all houses lights OFF")
+            GPIO.output(1, GPIO.LOW)
+            GPIO.output(7, GPIO.LOW)
+            GPIO.output(8, GPIO.LOW)
+            GPIO.output(25, GPIO.LOW)
+        elif WATER > 0 or WIND > 0:
+            print("We have Wind or Water power" - "Turn all houses lights ON")
+            GPIO.output(1, GPIO.HIGH)
+            GPIO.output(7, GPIO.HIGH)
+            GPIO.output(8, GPIO.HIGH)
+            GPIO.output(25, GPIO.HIGH)
+        elif SOLAR == 1:
+            print("Half Power - Turn 2 houses lights OFF")
+            GPIO.output(1, GPIO.HIGH)
+            GPIO.output(7, GPIO.HIGH)
+            GPIO.output(8, GPIO.LOW)
+            GPIO.output(25, GPIO.LOW)
+        elif SOLAR == 2:
+            print("Full Power - Turn all houses lights ON")
+            GPIO.output(1, GPIO.HIGH)
+            GPIO.output(7, GPIO.HIGH)
+            GPIO.output(8, GPIO.HIGH)
+            GPIO.output(25, GPIO.HIGH)
+        else:
+            print("Ummmm")
         print("Waiting... 1 second.")
         time.sleep(1)
 

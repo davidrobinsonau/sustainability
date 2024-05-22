@@ -43,7 +43,10 @@ def setup_pygame():
     # Set the display to fullscreen
     pygame.init()
     pygame.mouse.set_visible(False)
-    pygame.display.set_mode((0, 0), FULLSCREEN)
+    pygame.display.set_mode(
+        (pygame.display.Info().current_w, pygame.display.Info().current_h),
+        pygame.FULLSCREEN,
+    )
     pygame.display.set_caption("Sustainability Display")
     pygame.font.init()
     # Set the background color

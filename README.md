@@ -1,6 +1,13 @@
 # sustainability
 Hive Display of Wind, Hydro, Hydro Battery, and Solar
 
+# Next Steps
+Try to get screen to be full size.
+Might need to switch back to the other window manager?
+
+For Andrew:
+Add solar panels to houses. As there is no solar panels in display.
+
 # Software Language
 Python 3
 
@@ -48,13 +55,6 @@ GPIO7 - 2nd set of House Lights
 GPIO1 - First set of House Lights
 
 - Hydro Light - Currently set to be always ON
-
-
-I need:
-11 x NPN Transisters to test on LED.
-Small Screwdrivers
-6V Power supply to lower noise of motors.
-Cut - on LEDS and connect Pins to Breadboard for NPN Transister.
 
 
 # Commands to remember for Raspberry Pi 5

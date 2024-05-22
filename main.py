@@ -43,10 +43,18 @@ def setup_pygame():
     # Set the display to fullscreen
     pygame.init()
     pygame.mouse.set_visible(False)
-    pygame.display.set_mode(
-        (pygame.display.Info().current_w, pygame.display.Info().current_h),
-        pygame.FULLSCREEN,
+    # Get the display information
+    info = pygame.display.Info()
+
+    # Calculate the combined resolution (example for two 1920x1080 monitors side by side)
+    combined_width = info.current_w
+    combined_height = info.current_h
+
+    # Set the display mode to the combined resolution in fullscreen mode
+    screen = pygame.display.set_mode(
+        (combined_width, combined_height), pygame.FULLSCREEN
     )
+
     pygame.display.set_caption("Sustainability Display")
     pygame.font.init()
     # Set the background color

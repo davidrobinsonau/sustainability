@@ -38,8 +38,23 @@ WATER = 0  # 0 = No Water, 1 = LOW Water, 2 = Full Water
 WIND = 0  # 0 = No Wind, 1 = LOW Wind, 2 = Full Wind
 
 
+def FindDisplayDriver():
+    for driver in ["fbcon", "directfb", "svgalib"]:
+        if not os.getenv("SDL_VIDEODRIVER"):
+            os.putenv("SDL_VIDEODRIVER", driver)
+        try:
+            pygame.display.init()
+            return True
+        except pygame.error:
+            pass
+    return False
+
+
 # Setup PyGame for Full screen
 def setup_pygame():
+    if not FindDisplayDriver():
+        print("Failed to initialise display driver")
+        sys.exit(1)
     # Set the display to fullscreen
     pygame.init()
     pygame.mouse.set_visible(False)

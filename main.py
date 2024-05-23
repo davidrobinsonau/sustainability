@@ -39,7 +39,9 @@ WIND = 0  # 0 = No Wind, 1 = LOW Wind, 2 = Full Wind
 
 
 def FindDisplayDriver():
-    for driver in ["fbcon", "directfb", "svgalib", "x11"]:
+    # "x11" won't go full screen on a Raspberry Pi
+    os.environ["SDL_VIDEO_WINDOW_POS"] = "0,0"
+    for driver in ["fbcon", "directfb", "svgalib"]:
         if not os.getenv("SDL_VIDEODRIVER"):
             os.putenv("SDL_VIDEODRIVER", driver)
         try:
@@ -70,7 +72,7 @@ def setup_pygame():
     total_height = height
 
     # Set the display mode to cover both displays
-    screen = pygame.display.set_mode((total_width, total_height))
+    screen = pygame.display.set_mode((total_width, total_height), pygame.FULLSCREEN)
 
     # Move window to cover both screens
     # os.environ["SDL_VIDEO_WINDOW_POS"] = "0,0"

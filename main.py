@@ -39,7 +39,7 @@ WIND = 0  # 0 = No Wind, 1 = LOW Wind, 2 = Full Wind
 
 
 def FindDisplayDriver():
-    for driver in ["fbcon", "directfb", "svgalib"]:
+    for driver in ["fbcon", "directfb", "svgalib", "x11"]:
         if not os.getenv("SDL_VIDEODRIVER"):
             os.putenv("SDL_VIDEODRIVER", driver)
         try:
@@ -57,25 +57,26 @@ def setup_pygame():
         sys.exit(1)
     # Set the display to fullscreen
     pygame.init()
-    pygame.mouse.set_visible(False)
+    # pygame.mouse.set_visible(False)
     # Get the display information
-    info = pygame.display.Info()
+    # info = pygame.display.Info()
 
     # Calculate the combined resolution (example for two 1920x1080 monitors side by side)
-    combined_width = info.current_w
-    combined_height = info.current_h
+    # combined_width = info.current_w
+    # combined_height = info.current_h
 
     # Set the display mode to the combined resolution in fullscreen mode
-    screen = pygame.display.set_mode(
-        (combined_width, combined_height), pygame.FULLSCREEN
-    )
+    # screen = pygame.display.set_mode(
+    #    (combined_width, combined_height), pygame.FULLSCREEN
+    # )
+    screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN | pygame.SCALED)
 
-    pygame.display.set_caption("Sustainability Display")
-    pygame.font.init()
+    screen.display.set_caption("Sustainability Display")
+    screen.font.init()
     # Set the background color
-    screen = pygame.display.get_surface()
+    # screen = pygame.display.get_surface()
     screen.fill((0, 0, 0))
-    pygame.display.flip()
+    screen.display.flip()
     return screen
 
 

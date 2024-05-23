@@ -52,9 +52,9 @@ def FindDisplayDriver():
 
 # Setup PyGame for Full screen
 def setup_pygame():
-    # if not FindDisplayDriver():
-    # print("Failed to initialise display driver")
-    # sys.exit(1)
+    if not FindDisplayDriver():
+        print("Failed to initialise display driver")
+        sys.exit(1)
     # Set the display to fullscreen
     pygame.init()
     pygame.mouse.set_visible(False)

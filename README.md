@@ -94,6 +94,7 @@ pip3 install rpi-lgpio
    Trying Wayland - reboot
    Failed
    SDL_VIDEODRIVER=x11 ./main.py worked.
-   
+   Tried lots of options without success. Switching to X11 backend.
+   Better... Aleast it was across both.
 2024-05-14 Changed background wallpaper to Hive.
 2024-05-06 Connect up 5v or 3.3v?

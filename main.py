@@ -57,6 +57,24 @@ def setup_pygame():
         sys.exit(1)
     # Set the display to fullscreen
     pygame.init()
+
+    # Get the dimensions of both displays
+    info = pygame.display.Info()
+    width = info.current_w
+    height = info.current_h
+
+    # Assume both displays are side by side horizontally
+    total_width = (
+        width * 2
+    )  # adjust this if displays are not side by side or have different resolutions
+    total_height = height
+
+    # Set the display mode to cover both displays
+    screen = pygame.display.set_mode((total_width, total_height), pygame.NOFRAME)
+
+    # Move window to cover both screens
+    os.environ["SDL_VIDEO_WINDOW_POS"] = "0,0"
+
     # pygame.mouse.set_visible(False)
     # Get the display information
     # info = pygame.display.Info()
@@ -70,7 +88,6 @@ def setup_pygame():
     #    (combined_width, combined_height), pygame.FULLSCREEN
     # )
     #
-    screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 
     # screen.display.set_caption("Sustainability Display")
     # screen.font.init()

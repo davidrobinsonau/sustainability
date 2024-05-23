@@ -129,8 +129,8 @@ def main():
     # Draw the text "Coming soon" on the screen
     draw_text(pygame_screen, "Coming soon", 100, 100)
     draw_text(pygame_screen, "Sustainability Display", 100, 300)
-    draw_text(pygame_screen, "Push Yellow Button for Hydro Power", 2800, 140)
-    draw_text(pygame_screen, "Push Red Button for Wind Power", 2800, 600)
+    draw_text(pygame_screen, "Push Yellow Button for Hydro Power", 2700, 140)
+    draw_text(pygame_screen, "Push Red Button for Wind Power", 2700, 600)
     # Display the screen resolution on the display for debugging
     draw_text(pygame_screen, str(get_screen_resolution()), 200, 200)
 

@@ -41,7 +41,7 @@ WIND = 0  # 0 = No Wind, 1 = LOW Wind, 2 = Full Wind
 def FindDisplayDriver():
     # "x11" won't go full screen on a Raspberry Pi
     os.environ["SDL_VIDEO_WINDOW_POS"] = "0,0"
-    for driver in ["fbcon", "directfb", "svgalib"]:
+    for driver in ["kmsdrm", "fbcon", "directfb", "svgalib"]:
         if not os.getenv("SDL_VIDEODRIVER"):
             os.putenv("SDL_VIDEODRIVER", driver)
         try:

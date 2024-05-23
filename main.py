@@ -70,7 +70,7 @@ def setup_pygame():
     total_height = height
 
     # Set the display mode to cover both displays
-    screen = pygame.display.set_mode((total_width, total_height), pygame.FULLSCREEN)
+    screen = pygame.display.set_mode((total_width, total_height))
 
     # Move window to cover both screens
     # os.environ["SDL_VIDEO_WINDOW_POS"] = "0,0"

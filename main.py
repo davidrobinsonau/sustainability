@@ -69,7 +69,8 @@ def setup_pygame():
     # screen = pygame.display.set_mode(
     #    (combined_width, combined_height), pygame.FULLSCREEN
     # )
-    screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN | pygame.SCALED)
+    #
+    screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 
     screen.display.set_caption("Sustainability Display")
     screen.font.init()

@@ -71,27 +71,10 @@ def setup_pygame():
     )  # adjust this if displays are not side by side or have different resolutions
     total_height = height
 
-    # Set the display mode to cover both displays pygame.FULLSCREEN
+    # Set the display mode to cover both displays - pygame.FULLSCREEN refuses to work over two monitors on X11.
     screen = pygame.display.set_mode(
         (total_width, total_height), pygame.NOFRAME, display=0
     )
-
-    # Move window to cover both screens
-    # os.environ["SDL_VIDEO_WINDOW_POS"] = "0,0"
-
-    # pygame.mouse.set_visible(False)
-    # Get the display information
-    # info = pygame.display.Info()
-
-    # Calculate the combined resolution (example for two 1920x1080 monitors side by side)
-    # combined_width = info.current_w
-    # combined_height = info.current_h
-
-    # Set the display mode to the combined resolution in fullscreen mode
-    # screen = pygame.display.set_mode(
-    #    (combined_width, combined_height), pygame.FULLSCREEN
-    # )
-    #
 
     # screen.display.set_caption("Sustainability Display")
     # screen.font.init()
@@ -145,6 +128,9 @@ def main():
     pygame_screen = setup_pygame()
     # Draw the text "Coming soon" on the screen
     draw_text(pygame_screen, "Coming soon", 100, 100)
+    draw_text(pygame_screen, "Sustainability Display", 100, 300)
+    draw_text(pygame_screen, "Bush Yellow Button for Hydro Power", 3000, 100)
+    draw_text(pygame_screen, "Bush Red Button for Wind Power", 3000, 700)
     # Display the screen resolution on the display for debugging
     draw_text(pygame_screen, str(get_screen_resolution()), 200, 200)
 

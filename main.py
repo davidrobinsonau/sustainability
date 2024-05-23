@@ -72,8 +72,8 @@ def setup_pygame():
     #
     screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 
-    screen.display.set_caption("Sustainability Display")
-    screen.font.init()
+    # screen.display.set_caption("Sustainability Display")
+    # screen.font.init()
     # Set the background color
     # screen = pygame.display.get_surface()
     screen.fill((0, 0, 0))

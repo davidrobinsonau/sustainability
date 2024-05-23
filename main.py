@@ -77,7 +77,7 @@ def setup_pygame():
     # Set the background color
     # screen = pygame.display.get_surface()
     screen.fill((0, 0, 0))
-    screen.display.flip()
+    pygame.display.flip()
     return screen
 
 

@@ -135,7 +135,8 @@ def main():
     draw_text(pygame_screen, str(get_screen_resolution()), 200, 200)
 
     # Watch the PIN status every 1 second
-    while True:
+    running = True
+    while running:
         # Check the status of the PIN
         if GPIO.input(20) == PI_LOW:
             print("Sunset")
@@ -196,8 +197,17 @@ def main():
             GPIO.output(25, GPIO.HIGH)
         else:
             print("Ummmm")
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                running = False
         print("Waiting... 1 second.")
         time.sleep(1)
+    # Quit Pygame
+    pygame.quit()
+    sys.exit()
 
 
 # call the main function

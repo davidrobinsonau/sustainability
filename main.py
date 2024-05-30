@@ -113,7 +113,7 @@ def setup_pygame():
     # screen.font.init()
     # Set the background color
     # screen = pygame.display.get_surface()
-    screen.fill((0, 0, 0))
+    # screen.fill((0, 0, 0))
     pygame.display.flip()
     return screen
 
@@ -163,6 +163,11 @@ def main():
     pygame_images = load_images()
     # Load dawn start image and display on the far right side of the screen
     pygame_screen.blit(pygame_images["start"], (1920, 0))
+    # Check if the image was displayed correctly
+    if pygame_screen.get_at((1920, 0)) == (0, 0, 0):
+        print("Image was not displayed correctly")
+    else:
+        print("Image was displayed correctly")
     # Draw the text "Coming soon" on the screen
     draw_text(pygame_screen, "Coming soon", 100, 100)
     draw_text(pygame_screen, "Sustainability Display", 100, 300)

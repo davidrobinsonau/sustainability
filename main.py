@@ -162,7 +162,7 @@ def main():
     # Load the Images
     pygame_images = load_images()
     # Load dawn start image and display on the far right side of the screen
-    pygame_screen.blit(pygame_images["start"], (1920, 0))
+    pygame_screen.blit(pygame_images["start"], (0, 0))  # 1920
     # Check if the image was displayed correctly
     if pygame_screen.get_at((1920, 0)) == (0, 0, 0):
         print("Image was not displayed correctly")

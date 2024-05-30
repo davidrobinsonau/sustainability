@@ -53,9 +53,9 @@ HOUSE4_GPIO = 25
 def load_images():
     # 1920x1080 Pixels for second Screen
     images = {
-        "start": "images/dawn.png",
-        "sunset": "images/dawn.png",
-        "sunrise": "images/dawn.png",
+        "start": "images/dawn.jpg",
+        "sunset": "images/dawn.jpg",
+        "sunrise": "images/dawn.jpg",
     }
     loaded_images = {}
     for name, image_path in images.items():
@@ -162,12 +162,7 @@ def main():
     # Load the Images
     pygame_images = load_images()
     # Load dawn start image and display on the far right side of the screen
-    pygame_screen.blit(pygame_images["start"], (0, 0))  # 1920
-    # Check if the image was displayed correctly
-    if pygame_screen.get_at((1920, 0)) == (0, 0, 0):
-        print("Image was not displayed correctly")
-    else:
-        print("Image was displayed correctly")
+    pygame_screen.blit(pygame_images["start"], (1920, 0))
     # Draw the text "Coming soon" on the screen
     draw_text(pygame_screen, "Coming soon", 100, 100)
     draw_text(pygame_screen, "Sustainability Display", 100, 300)

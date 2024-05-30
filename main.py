@@ -59,8 +59,15 @@ def load_images():
     }
     loaded_images = {}
     for name, image_path in images.items():
-        loaded_image = pygame.image.load(image_path)
-        loaded_images[name] = loaded_image
+        try:
+            loaded_image = pygame.image.load(image_path)
+            if loaded_image is None:
+                print(f"Image {image_path} did not load correctly")
+            else:
+                print(f"Image {image_path}loaded successfully")
+            loaded_images[name] = loaded_image
+        except pygame.error:
+            print(f"Failed to load image: {image_path}")
     return loaded_images
 
 
@@ -164,7 +171,7 @@ def main():
     # Display the screen resolution on the display for debugging
     draw_text(pygame_screen, str(get_screen_resolution()), 200, 200)
 
-    # pygame.display.flip()
+    pygame.display.flip()
 
     # Watch the PIN status every 1 second
     running = True

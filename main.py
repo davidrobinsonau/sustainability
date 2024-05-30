@@ -164,6 +164,7 @@ def main():
 
     # Load dawn start image and display on the far right side of the screen
     pygame_screen.blit(pygame_images["start"], (1920, 0))
+    pygame.display.flip()
 
     # Watch the PIN status every 1 second
     running = True

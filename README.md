@@ -2,8 +2,7 @@
 Hive Display of Wind, Hydro, Hydro Battery, and Solar
 
 # Next Steps
-Try to get screen to be full size.
-Might need to switch back to the other window manager?
+https://github.com/anrayliu/pyvidplayer2/blob/main/examples/video_demo.py
 
 For Andrew:
 Add solar panels to houses. As there is no solar panels in display.
@@ -88,6 +87,10 @@ This is a Raspberry Pi Device and the standard RPi isn't support for Python
 sudo apt remove python3-rpi.gpio
 pip3 install rpi-lgpio
 
+## Pygame Fix FULLSCREEN refuses to work across two monitors now. (used to work)
+Changed it to pygame.NOFRAME, display=0
+
+
 # History
 2024-05-23 Trying to get the PyGame FULL SCREEN to be across both monitors, like it is on another Raspberry Pi
    sudo apt-get install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev
@@ -97,5 +100,11 @@ pip3 install rpi-lgpio
    Tried lots of options without success. Switching to X11 backend.
    Better... Aleast it was across both.
    pygame.FULLSCREEN refuses to work over two monitors on X11.
+   sudo apt-get update
+   sudo apt-get install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev
+   sudo apt-get install libdirectfb-1.7-7 libdirectfb-dev
+   sudo apt-get install libsvga1 libsvga-dev
+   sudo apt-get install libgbm-dev libdrm-dev
+
 2024-05-14 Changed background wallpaper to Hive.
 2024-05-06 Connect up 5v or 3.3v?

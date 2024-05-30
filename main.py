@@ -37,6 +37,32 @@ SOLAR = 0  # 0 = No Sun, 1 = LOW Sunlight, 2 = Full Sun
 WATER = 0  # 0 = No Water, 1 = LOW Water, 2 = Full Water
 WIND = 0  # 0 = No Wind, 1 = LOW Wind, 2 = Full Wind
 
+# INPUT GPIO
+SUNSET_GPIO = 20
+SUNBEHIND_GPIO = 21
+BUTTON1_GPIO = 19
+BUTTON2_GPIO = 26
+
+# OUTPUT GPIO Houses
+HOUSE1_GPIO = 1
+HOUSE2_GPIO = 7
+HOUSE3_GPIO = 8
+HOUSE4_GPIO = 25
+
+
+def load_images():
+    # 1920x1080 Pixels for second Screen
+    images = {
+        "start": "images/dawn.png",
+        "sunset": "images/dawn.png",
+        "sunrise": "images/dawn.png",
+    }
+    loaded_images = {}
+    for name, image_path in images.items():
+        loaded_image = pygame.image.load(image_path)
+        loaded_images[name] = loaded_image
+    return loaded_images
+
 
 def FindDisplayDriver():
     # "x11" won't go full screen on a Raspberry Pi
@@ -111,21 +137,23 @@ def main():
     GPIO.setwarnings(False)
 
     # Set the Line Sensor GPIO pins to pull up
-    GPIO.setup(20, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-    GPIO.setup(21, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(SUNSET_GPIO, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(SUNBEHIND_GPIO, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     # Set the Relay for Motors GPIO Pins to Output and set to HIGH
     GPIO.setup(2, GPIO.OUT, initial=GPIO.HIGH)  # Water Turbine
     GPIO.setup(3, GPIO.OUT, initial=GPIO.HIGH)  # Wind Turbine
     # Set GPIO 19 and 26 to be an input for the 2 buttons
-    GPIO.setup(19, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-    GPIO.setup(26, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(BUTTON1_GPIO, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(BUTTON2_GPIO, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     # Set GPIO 1,7,8,25 to be outputs for the LEDS on the houses
-    GPIO.setup(1, GPIO.OUT, initial=GPIO.LOW)
-    GPIO.setup(7, GPIO.OUT, initial=GPIO.LOW)
-    GPIO.setup(8, GPIO.OUT, initial=GPIO.LOW)
-    GPIO.setup(25, GPIO.OUT, initial=GPIO.LOW)
+    GPIO.setup(HOUSE1_GPIO, GPIO.OUT, initial=GPIO.LOW)
+    GPIO.setup(HOUSE2_GPIO, GPIO.OUT, initial=GPIO.LOW)
+    GPIO.setup(HOUSE3_GPIO, GPIO.OUT, initial=GPIO.LOW)
+    GPIO.setup(HOUSE4_GPIO, GPIO.OUT, initial=GPIO.LOW)
     # Get Pygame setup
     pygame_screen = setup_pygame()
+    # Load the Images
+    pygame_images = load_images()
     # Draw the text "Coming soon" on the screen
     draw_text(pygame_screen, "Coming soon", 100, 100)
     draw_text(pygame_screen, "Sustainability Display", 100, 300)
@@ -134,22 +162,25 @@ def main():
     # Display the screen resolution on the display for debugging
     draw_text(pygame_screen, str(get_screen_resolution()), 200, 200)
 
+    # Load dawn start image and display on the far right side of the screen
+    pygame_screen.blit(pygame_images["start"], (1920, 0))
+
     # Watch the PIN status every 1 second
     running = True
     while running:
         # Check the status of the PIN
-        if GPIO.input(20) == PI_LOW:
+        if GPIO.input(SUNSET_GPIO) == PI_LOW:
             print("Sunset")
             # Set all the houses to LOW
             SOLAR = 0
-        elif GPIO.input(21) == PI_LOW:
+        elif GPIO.input(SUNBEHIND_GPIO) == PI_LOW:
             print("Sun behind Clouds or Hill")
             SOLAR = 1
         else:
             print("Sunrise")
             # Set all the houses to HIGH
             SOLAR = 2
-        if GPIO.input(19) == PI_LOW:
+        if GPIO.input(BUTTON1_GPIO) == PI_LOW:
             print("Button 1 Pressed")
             # Set the Relay for Water Motors GPIO Pins to LOW
             GPIO.output(2, GPIO.LOW)
@@ -159,7 +190,7 @@ def main():
             # Set the Relay for Water Motors GPIO Pins to HIGH
             GPIO.output(2, GPIO.HIGH)
             WATER = 0
-        if GPIO.input(26) == PI_LOW:
+        if GPIO.input(BUTTON2_GPIO) == PI_LOW:
             print("Button 2 Pressed")
             # Set the Relay for Wind Motors GPIO Pins to LOW
             GPIO.output(3, GPIO.LOW)
@@ -173,28 +204,28 @@ def main():
         # Full Power
         if SOLAR == 0 and WATER == 0 and WIND == 0:
             print("No power - Turn all houses lights OFF")
-            GPIO.output(1, GPIO.LOW)
-            GPIO.output(7, GPIO.LOW)
-            GPIO.output(8, GPIO.LOW)
-            GPIO.output(25, GPIO.LOW)
+            GPIO.output(HOUSE1_GPIO, GPIO.LOW)
+            GPIO.output(HOUSE2_GPIO, GPIO.LOW)
+            GPIO.output(HOUSE3_GPIO, GPIO.LOW)
+            GPIO.output(HOUSE4_GPIO, GPIO.LOW)
         elif WATER > 0 or WIND > 0:
             print("We have Wind or Water power - Turn all houses lights ON")
-            GPIO.output(1, GPIO.HIGH)
-            GPIO.output(7, GPIO.HIGH)
-            GPIO.output(8, GPIO.HIGH)
-            GPIO.output(25, GPIO.HIGH)
+            GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
+            GPIO.output(HOUSE2_GPIO, GPIO.HIGH)
+            GPIO.output(HOUSE3_GPIO, GPIO.HIGH)
+            GPIO.output(HOUSE4_GPIO, GPIO.HIGH)
         elif SOLAR == 1:
             print("Half Power - Turn 3 houses lights OFF")
-            GPIO.output(1, GPIO.HIGH)
-            GPIO.output(7, GPIO.LOW)
-            GPIO.output(8, GPIO.LOW)
-            GPIO.output(25, GPIO.LOW)
+            GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
+            GPIO.output(HOUSE2_GPIO, GPIO.LOW)
+            GPIO.output(HOUSE3_GPIO, GPIO.LOW)
+            GPIO.output(HOUSE4_GPIO, GPIO.LOW)
         elif SOLAR == 2:
             print("Full Power - Turn all houses lights ON")
-            GPIO.output(1, GPIO.HIGH)
-            GPIO.output(7, GPIO.HIGH)
-            GPIO.output(8, GPIO.HIGH)
-            GPIO.output(25, GPIO.HIGH)
+            GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
+            GPIO.output(HOUSE2_GPIO, GPIO.HIGH)
+            GPIO.output(HOUSE3_GPIO, GPIO.HIGH)
+            GPIO.output(HOUSE4_GPIO, GPIO.HIGH)
         else:
             print("Ummmm")
 

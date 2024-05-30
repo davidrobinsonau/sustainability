@@ -154,6 +154,8 @@ def main():
     pygame_screen = setup_pygame()
     # Load the Images
     pygame_images = load_images()
+    # Load dawn start image and display on the far right side of the screen
+    pygame_screen.blit(pygame_images["start"], (1920, 0))
     # Draw the text "Coming soon" on the screen
     draw_text(pygame_screen, "Coming soon", 100, 100)
     draw_text(pygame_screen, "Sustainability Display", 100, 300)
@@ -162,9 +164,7 @@ def main():
     # Display the screen resolution on the display for debugging
     draw_text(pygame_screen, str(get_screen_resolution()), 200, 200)
 
-    # Load dawn start image and display on the far right side of the screen
-    pygame_screen.blit(pygame_images["start"], (1920, 0))
-    pygame.display.flip()
+    # pygame.display.flip()
 
     # Watch the PIN status every 1 second
     running = True

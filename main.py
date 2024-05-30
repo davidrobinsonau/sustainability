@@ -57,9 +57,9 @@ WIND_GPIO = 3
 def load_images():
     # 1920x1080 Pixels for second Screen
     images = {
-        "start": "images/dawn.jpg",
-        "sunset": "images/dawn.jpg",
-        "sunrise": "images/dawn.jpg",
+        "start": "images/dawn.png",
+        "sunset": "images/dawn.png",
+        "sunrise": "images/dawn.png",
     }
     loaded_images = {}
     for name, image_path in images.items():

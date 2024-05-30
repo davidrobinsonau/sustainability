@@ -49,6 +49,10 @@ HOUSE2_GPIO = 7
 HOUSE3_GPIO = 8
 HOUSE4_GPIO = 25
 
+# Output for the Motors
+WATER_GPIO = 2
+WIND_GPIO = 3
+
 
 def load_images():
     # 1920x1080 Pixels for second Screen
@@ -147,7 +151,7 @@ def main():
     GPIO.setup(SUNSET_GPIO, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     GPIO.setup(SUNBEHIND_GPIO, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     # Set the Relay for Motors GPIO Pins to Output and set to HIGH
-    GPIO.setup(2, GPIO.OUT, initial=GPIO.HIGH)  # Water Turbine
+    GPIO.setup(WATER_GPIO, GPIO.OUT, initial=GPIO.HIGH)  # Water Turbine
     GPIO.setup(3, GPIO.OUT, initial=GPIO.HIGH)  # Wind Turbine
     # Set GPIO 19 and 26 to be an input for the 2 buttons
     GPIO.setup(BUTTON1_GPIO, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -166,8 +170,8 @@ def main():
     # Draw the text "Coming soon" on the screen
     draw_text(pygame_screen, "Coming soon", 100, 100)
     draw_text(pygame_screen, "Sustainability Display", 100, 300)
-    draw_text(pygame_screen, "Push Yellow Button for Hydro Power", 2600, 140)
-    draw_text(pygame_screen, "Push Red Button for Wind Power", 2600, 600)
+    draw_text(pygame_screen, "Push Yellow Button for Hydro Power", 2000, 140)
+    draw_text(pygame_screen, "Push Red Button for Wind Power", 2000, 600)
     # Display the screen resolution on the display for debugging
     draw_text(pygame_screen, str(get_screen_resolution()), 200, 200)
 
@@ -188,24 +192,30 @@ def main():
             print("Sunrise")
             # Set all the houses to HIGH
             SOLAR = 2
+
         if GPIO.input(BUTTON1_GPIO) == PI_LOW:
             print("Button 1 Pressed")
             # Set the Relay for Water Motors GPIO Pins to LOW
-            GPIO.output(2, GPIO.LOW)
+            GPIO.output(WATER_GPIO, GPIO.LOW)
+            # Sleep for 5 seconds to simulate the water turbines spinning up
+            time.sleep(5)
             WATER = 2
             # If
         else:
             # Set the Relay for Water Motors GPIO Pins to HIGH
-            GPIO.output(2, GPIO.HIGH)
+            GPIO.output(WATER_GPIO, GPIO.HIGH)
             WATER = 0
+
         if GPIO.input(BUTTON2_GPIO) == PI_LOW:
             print("Button 2 Pressed")
             # Set the Relay for Wind Motors GPIO Pins to LOW
-            GPIO.output(3, GPIO.LOW)
+            GPIO.output(WIND_GPIO, GPIO.LOW)
+            # Sleep for 5 seconds to simulate the wind turbines spinning up
+            time.sleep(5)
             WIND = 2
         else:
             # Set the Relay for Wind Motors GPIO Pins to HIGH
-            GPIO.output(3, GPIO.HIGH)
+            GPIO.output(WIND_GPIO, GPIO.HIGH)
             WIND = 0
 
         # Display Houses Lights based on SOLAR, Hydro, and Wind power.

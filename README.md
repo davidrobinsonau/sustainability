@@ -11,6 +11,8 @@ Add solar panels to houses. As there is no solar panels in display.
 Python 3
 PyGame
 PyAudio
+sudo apt install python3-opencv
+libportaudio2
 https://github.com/anrayliu/pyvidplayer2/tree/main for Video Playing within PyGame
 
 TODO When Nothing Happening, Make one screen tell the person to Turn the Wheel to move the sun across the day.

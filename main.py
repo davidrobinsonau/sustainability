@@ -206,15 +206,17 @@ def main():
     # Load dawn start image and display on the far right side of the screen
     pygame_screen.blit(pygame_images["start"], (1921, 0))
     # Draw the text "Coming soon" on the screen
-    draw_text(pygame_screen, "Coming soon", 100, 100)
-    draw_text(pygame_screen, "Sustainability Display", 100, 300)
-    draw_text(pygame_screen, "Push Yellow Button for Hydro Power", 2000, 140)
-    draw_text(pygame_screen, "Push Red Button for Wind Power", 2000, 600)
+    # draw_text(pygame_screen, "Coming soon", 100, 100)
+    # draw_text(pygame_screen, "Sustainability Display", 100, 300)
+    # draw_text(pygame_screen, "Push Yellow Button for Hydro Power", 2000, 140)
+    # draw_text(pygame_screen, "Push Red Button for Wind Power", 2000, 600)
     # Display the screen resolution on the display for debugging
-    draw_text(pygame_screen, str(get_screen_resolution()), 200, 200)
+    # draw_text(pygame_screen, str(get_screen_resolution()), 200, 200)
 
     pygame.display.flip()
     pygame_movie = pygame_movies["hydro"]
+    # Set screen size to full screen
+    pygame_movie.change_resolution(1080)
 
     # pygame.time.wait(16)  # around 60 fps
     # Watch the PIN status every 1 second
@@ -296,7 +298,7 @@ def main():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 running = False
         print("Waiting... 1 second.")
-        time.sleep(0.2)
+        time.sleep(0.1)
     # Quit Pygame
     pygame.quit()
     sys.exit()

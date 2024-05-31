@@ -60,7 +60,7 @@ def load_images():
         "start": "images/renewableenergy-01.png",
         "sunset": "images/dawn.png",
         "sunrise": "images/dawn.png",
-        "leftscreen": "images/leftmonitor.jpg",
+        "leftscreen": "images/leftmonitor.jpeg",
     }
     loaded_images = {}
     for name, image_path in images.items():

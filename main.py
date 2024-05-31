@@ -245,6 +245,8 @@ def main():
     while running:
         if pygame_movie.draw(pygame_screen, (0, 0), force_draw=False):
             pygame.display.update()
+        if pygame_movie.active == False:
+            pygame_movie.restart()
 
         # Check the status of the PIN
         if GPIO.input(SUNSET_GPIO) == PI_LOW:
@@ -322,7 +324,7 @@ def main():
                 running = False
         # print("Waiting... 1 second.")
         # time.sleep(0.1)
-        pygame.time.wait(16)  # around 60 fps
+        # pygame.time.wait(16)  # around 60 fps
     # Quit Pygame
     pygame.quit()
     sys.exit()

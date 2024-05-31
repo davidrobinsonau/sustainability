@@ -216,7 +216,7 @@ def main():
     pygame.display.flip()
     pygame_movie = pygame_movies["hydro"]
 
-    pygame.time.wait(16)  # around 60 fps
+    # pygame.time.wait(16)  # around 60 fps
     # Watch the PIN status every 1 second
     running = True
     while running:
@@ -241,7 +241,7 @@ def main():
             # Set the Relay for Water Motors GPIO Pins to LOW
             GPIO.output(WATER_GPIO, GPIO.LOW)
             # Sleep for 5 seconds to simulate the water turbines spinning up
-            time.sleep(5)
+            # time.sleep(5)
             WATER = 2
             # If
         else:
@@ -254,7 +254,7 @@ def main():
             # Set the Relay for Wind Motors GPIO Pins to LOW
             GPIO.output(WIND_GPIO, GPIO.LOW)
             # Sleep for 5 seconds to simulate the wind turbines spinning up
-            time.sleep(5)
+            # time.sleep(5)
             WIND = 2
         else:
             # Set the Relay for Wind Motors GPIO Pins to HIGH
@@ -296,7 +296,7 @@ def main():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 running = False
         print("Waiting... 1 second.")
-        time.sleep(1)
+        time.sleep(0.2)
     # Quit Pygame
     pygame.quit()
     sys.exit()

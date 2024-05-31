@@ -9,9 +9,10 @@ Add solar panels to houses. As there is no solar panels in display.
 
 # Software Language
 Python 3
+PyGame
+PyAudio
+https://github.com/anrayliu/pyvidplayer2/tree/main for Video Playing within PyGame
 
-TODO Consider switching to PyGame for display over the two monitors. Then I can draw over the image and change it. 
-TODO Draw two Arrows that align up to the Buttons and Add large text "Wind Power" "Hydro Power"
 TODO When Nothing Happening, Make one screen tell the person to Turn the Wheel to move the sun across the day.
 TODO Make an incentive to turn the SUN from one side to the other.
 

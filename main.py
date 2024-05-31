@@ -215,7 +215,7 @@ def main():
 
     pygame.display.flip()
     pygame_movie = pygame_movies["hydro"]
-    pygame_movie.preview()
+    pygame_movie.preview(surface=pygame_screen)
 
     # Watch the PIN status every 1 second
     running = True

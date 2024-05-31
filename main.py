@@ -83,7 +83,7 @@ def load_images():
 def load_movies():
     # 1920x1080 Pixels for Screen
     movies = {
-        "hydro": "movies/howdoeshydropowerwork.mp4",
+        "hydro": "images/howdoeshydropowerwork.mp4",
     }
     loaded_movies = {}
     for name, movie_path in movies.items():

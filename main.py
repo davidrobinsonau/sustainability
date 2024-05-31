@@ -29,7 +29,7 @@ import pygame
 from pygame.locals import *
 
 # Pygame movie module
-from moviepy.editor import VideoFileClip
+from pyvidplayer2 import Video
 
 
 PI_HIGH = 1
@@ -88,7 +88,7 @@ def load_movies():
     loaded_movies = {}
     for name, movie_path in movies.items():
         try:
-            loaded_movie = VideoFileClip(movie_path)
+            loaded_movie = Video(movie_path)
             if loaded_movie is None:
                 print(f"Movie {movie_path} did not load correctly")
             else:
@@ -215,11 +215,14 @@ def main():
 
     pygame.display.flip()
     pygame_movie = pygame_movies["hydro"]
-    pygame_movie.preview(surface=pygame_screen)
 
+    pygame.time.wait(16)  # around 60 fps
     # Watch the PIN status every 1 second
     running = True
     while running:
+        if pygame_movie.draw(pygame_screen, (0, 0), force_draw=False):
+            pygame.display.update()
+
         # Check the status of the PIN
         if GPIO.input(SUNSET_GPIO) == PI_LOW:
             print("Sunset")

@@ -57,9 +57,10 @@ WIND_GPIO = 3
 def load_images():
     # 1920x1080 Pixels for second Screen
     images = {
-        "start": "images/dawn.png",
+        "start": "images/renewableenergy-01.png",
         "sunset": "images/dawn.png",
         "sunrise": "images/dawn.png",
+        "leftscreen": "images/leftmonitor.jpg",
     }
     loaded_images = {}
     for name, image_path in images.items():
@@ -73,6 +74,26 @@ def load_images():
         except pygame.error:
             print(f"Failed to load image: {image_path}")
     return loaded_images
+
+
+# Load up the movies to play on the screen
+def load_movies():
+    # 1920x1080 Pixels for Screen
+    movies = {
+        "hydro": "movies/howdoeshydropowerwork.mp4",
+    }
+    loaded_movies = {}
+    for name, movie_path in movies.items():
+        try:
+            loaded_movie = pygame.movie.Movie(movie_path)
+            if loaded_movie is None:
+                print(f"Movie {movie_path} did not load correctly")
+            else:
+                print(f"Movie {movie_path}loaded successfully")
+            loaded_movies[name] = loaded_movie
+        except pygame.error:
+            print(f"Failed to load movie: {movie_path}")
+    return loaded_movies
 
 
 def FindDisplayDriver():
@@ -165,8 +186,26 @@ def main():
     pygame_screen = setup_pygame()
     # Load the Images
     pygame_images = load_images()
+    # Load the Movies
+    pygame_movies = load_movies()
+    # Load the left screen image and display on the left side of the screen
+    pygame_screen.blit(pygame_images["leftscreen"], (0, 0))
+    # Play the movie on the left screen and keep to 1920x1080
+    # Get the movie
+    movie = pygame_movies["hydro"]
+
+    # Set the movie's rectangle size to match the screen size
+    movie_rect = movie.get_rect()
+    movie_rect.width = 1920
+    movie_rect.height = 1080
+
+    # Play the movie
+    movie.play()
+
+    # In your game loop, blit the movie to the screen
+    screen.blit(movie, movie_rect)
     # Load dawn start image and display on the far right side of the screen
-    pygame_screen.blit(pygame_images["start"], (1920, 0))
+    pygame_screen.blit(pygame_images["start"], (1921, 0))
     # Draw the text "Coming soon" on the screen
     draw_text(pygame_screen, "Coming soon", 100, 100)
     draw_text(pygame_screen, "Sustainability Display", 100, 300)

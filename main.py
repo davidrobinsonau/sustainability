@@ -229,19 +229,19 @@ def main():
 
         # Check the status of the PIN
         if GPIO.input(SUNSET_GPIO) == PI_LOW:
-            #print("Sunset")
+            # print("Sunset")
             # Set all the houses to LOW
             SOLAR = 0
         elif GPIO.input(SUNBEHIND_GPIO) == PI_LOW:
-            #print("Sun behind Clouds or Hill")
+            # print("Sun behind Clouds or Hill")
             SOLAR = 1
         else:
-            #print("Sunrise")
+            # print("Sunrise")
             # Set all the houses to HIGH
             SOLAR = 2
 
         if GPIO.input(BUTTON1_GPIO) == PI_LOW:
-            #print("Button 1 Pressed")
+            # print("Button 1 Pressed")
             # Set the Relay for Water Motors GPIO Pins to LOW
             GPIO.output(WATER_GPIO, GPIO.LOW)
             # Sleep for 5 seconds to simulate the water turbines spinning up
@@ -292,16 +292,15 @@ def main():
             GPIO.output(HOUSE3_GPIO, GPIO.HIGH)
             GPIO.output(HOUSE4_GPIO, GPIO.HIGH)
         else:
-            # print("Ummmm")
-
+            print("Ummmm")
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 running = False
-        #print("Waiting... 1 second.")
-        #time.sleep(0.1)
-        pygame.time.wait(16) # around 60 fps
+        # print("Waiting... 1 second.")
+        # time.sleep(0.1)
+        pygame.time.wait(16)  # around 60 fps
     # Quit Pygame
     pygame.quit()
     sys.exit()

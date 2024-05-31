@@ -62,6 +62,10 @@ def load_images():
     images = {
         "start": "images/renewableenergy01.png",
         "startbg": "images/renewableenergybg01.jpg",
+        "sunshade": "images/renewableenergy07.png",
+        "sunshadebg": "images/renewableenergybg07.jpg",
+        "sunout": "images/renewableenergy03.png",
+        "sunoutbg": "images/renewableenergybg03.jpg",
         "sunset": "images/dawn.png",
         "sunrise": "images/dawn.png",
         "leftscreen": "images/leftmonitor.jpeg",
@@ -163,6 +167,21 @@ def get_screen_resolution():
     return (screen.current_w, screen.current_h)
 
 
+def sunset_action(pygame_screen, pygame_images):
+    pygame_screen.blit(pygame_images["startbg"], (1921, 0))
+    pygame_screen.blit(pygame_images["start"], (1921, 0))
+
+
+def sunout_action(pygame_screen, pygame_images):
+    pygame_screen.blit(pygame_images["sunoutbg"], (1921, 0))
+    pygame_screen.blit(pygame_images["sunout"], (1921, 0))
+
+
+def sunshade_action(pygame_screen, pygame_images):
+    pygame_screen.blit(pygame_images["sunshadebg"], (1921, 0))
+    pygame_screen.blit(pygame_images["sunshade"], (1921, 0))
+
+
 def main():
     # Monitor GPIO20 - Sunset
     # GPIO21 - Sun behind clouds.
@@ -232,13 +251,16 @@ def main():
             # print("Sunset")
             # Set all the houses to LOW
             SOLAR = 0
+            sunset_action(pygame_screen, pygame_images)
         elif GPIO.input(SUNBEHIND_GPIO) == PI_LOW:
             # print("Sun behind Clouds or Hill")
             SOLAR = 1
+            sunshade_action(pygame_screen, pygame_images)
         else:
             # print("Sunrise")
             # Set all the houses to HIGH
             SOLAR = 2
+            sunout_action(pygame_screen, pygame_images)
 
         if GPIO.input(BUTTON1_GPIO) == PI_LOW:
             # print("Button 1 Pressed")

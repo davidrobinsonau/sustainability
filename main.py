@@ -61,7 +61,7 @@ def load_images():
     # 1920x1080 Pixels for second Screen
     images = {
         "start": "images/renewableenergy01.png",
-        "startbg": "images/renewableenergybg01.png",
+        "startbg": "images/renewableenergybg01.jpg",
         "sunset": "images/dawn.png",
         "sunrise": "images/dawn.png",
         "leftscreen": "images/leftmonitor.jpeg",

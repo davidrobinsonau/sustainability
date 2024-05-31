@@ -88,8 +88,7 @@ def load_movies():
     loaded_movies = {}
     for name, movie_path in movies.items():
         try:
-            loaded_movie_orig = VideoFileClip(movie_path)
-            loaded_movie = loaded_movie_orig.to_RGB().to_pygame()
+            loaded_movie = VideoFileClip(movie_path)
             if loaded_movie is None:
                 print(f"Movie {movie_path} did not load correctly")
             else:
@@ -197,14 +196,13 @@ def main():
     pygame_screen.blit(pygame_images["leftscreen"], (0, 0))
     # Play the movie on the left screen and keep to 1920x1080
     # Get the movie
-    pygame_movie = pygame_movies["hydro"]
 
     # Play the video
-    for frame in pygame_movie.iter_frames():
-        pygame_screen.blit(
-            pygame.image.frombuffer(frame.tostring(), frame.size, "RGB"), (0, 0)
-        )
-        pygame.display.flip()
+    # for frame in pygame_movie.iter_frames():
+    #    pygame_screen.blit(
+    #        pygame.image.frombuffer(frame.tostring(), frame.size, "RGB"), (0, 0)
+    #    )
+    #    pygame.display.flip()
     # Load dawn start image and display on the far right side of the screen
     pygame_screen.blit(pygame_images["start"], (1921, 0))
     # Draw the text "Coming soon" on the screen
@@ -216,6 +214,8 @@ def main():
     draw_text(pygame_screen, str(get_screen_resolution()), 200, 200)
 
     pygame.display.flip()
+    pygame_movie = pygame_movies["hydro"]
+    pygame_movie.preview()
 
     # Watch the PIN status every 1 second
     running = True

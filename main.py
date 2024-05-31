@@ -28,6 +28,9 @@ import os
 import pygame
 from pygame.locals import *
 
+# Pygame movie module
+from moviepy.editor import VideoFileClip
+
 
 PI_HIGH = 1
 PI_LOW = 0
@@ -85,14 +88,16 @@ def load_movies():
     loaded_movies = {}
     for name, movie_path in movies.items():
         try:
-            loaded_movie = pygame.movie.Movie(movie_path)
+            loaded_movie_orig = VideoFileClip(movie_path)
+            loaded_movie = loaded_movie_orig.to_RGB().to_pygame()
             if loaded_movie is None:
                 print(f"Movie {movie_path} did not load correctly")
             else:
-                print(f"Movie {movie_path}loaded successfully")
+                print(f"Movie {movie_path} loaded successfully")
             loaded_movies[name] = loaded_movie
-        except pygame.error:
+        except Exception as e:
             print(f"Failed to load movie: {movie_path}")
+            print(e)
     return loaded_movies
 
 
@@ -192,18 +197,14 @@ def main():
     pygame_screen.blit(pygame_images["leftscreen"], (0, 0))
     # Play the movie on the left screen and keep to 1920x1080
     # Get the movie
-    movie = pygame_movies["hydro"]
+    pygame_movie = pygame_movies["hydro"]
 
-    # Set the movie's rectangle size to match the screen size
-    movie_rect = movie.get_rect()
-    movie_rect.width = 1920
-    movie_rect.height = 1080
-
-    # Play the movie
-    movie.play()
-
-    # In your game loop, blit the movie to the screen
-    screen.blit(movie, movie_rect)
+    # Play the video
+    for frame in pygame_movie.iter_frames():
+        pygame_screen.blit(
+            pygame.image.frombuffer(frame.tostring(), frame.size, "RGB"), (0, 0)
+        )
+        pygame.display.flip()
     # Load dawn start image and display on the far right side of the screen
     pygame_screen.blit(pygame_images["start"], (1921, 0))
     # Draw the text "Coming soon" on the screen

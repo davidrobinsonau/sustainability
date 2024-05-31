@@ -324,7 +324,7 @@ def main():
                 running = False
         # print("Waiting... 1 second.")
         # time.sleep(0.1)
-        # pygame.time.wait(16)  # around 60 fps
+        pygame.time.wait(16)  # around 60 fps
     # Quit Pygame
     pygame.quit()
     sys.exit()

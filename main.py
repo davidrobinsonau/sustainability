@@ -60,7 +60,8 @@ WIND_GPIO = 3
 def load_images():
     # 1920x1080 Pixels for second Screen
     images = {
-        "start": "images/renewableenergy-01.png",
+        "start": "images/renewableenergy01.png",
+        "startbg": "images/renewableenergybg01.png",
         "sunset": "images/dawn.png",
         "sunrise": "images/dawn.png",
         "leftscreen": "images/leftmonitor.jpeg",
@@ -204,6 +205,7 @@ def main():
     #    )
     #    pygame.display.flip()
     # Load dawn start image and display on the far right side of the screen
+    pygame_screen.blit(pygame_images["startbg"], (1921, 0))
     pygame_screen.blit(pygame_images["start"], (1921, 0))
     # Draw the text "Coming soon" on the screen
     # draw_text(pygame_screen, "Coming soon", 100, 100)
@@ -227,19 +229,19 @@ def main():
 
         # Check the status of the PIN
         if GPIO.input(SUNSET_GPIO) == PI_LOW:
-            print("Sunset")
+            #print("Sunset")
             # Set all the houses to LOW
             SOLAR = 0
         elif GPIO.input(SUNBEHIND_GPIO) == PI_LOW:
-            print("Sun behind Clouds or Hill")
+            #print("Sun behind Clouds or Hill")
             SOLAR = 1
         else:
-            print("Sunrise")
+            #print("Sunrise")
             # Set all the houses to HIGH
             SOLAR = 2
 
         if GPIO.input(BUTTON1_GPIO) == PI_LOW:
-            print("Button 1 Pressed")
+            #print("Button 1 Pressed")
             # Set the Relay for Water Motors GPIO Pins to LOW
             GPIO.output(WATER_GPIO, GPIO.LOW)
             # Sleep for 5 seconds to simulate the water turbines spinning up
@@ -252,7 +254,7 @@ def main():
             WATER = 0
 
         if GPIO.input(BUTTON2_GPIO) == PI_LOW:
-            print("Button 2 Pressed")
+            # print("Button 2 Pressed")
             # Set the Relay for Wind Motors GPIO Pins to LOW
             GPIO.output(WIND_GPIO, GPIO.LOW)
             # Sleep for 5 seconds to simulate the wind turbines spinning up
@@ -266,39 +268,40 @@ def main():
         # Display Houses Lights based on SOLAR, Hydro, and Wind power.
         # Full Power
         if SOLAR == 0 and WATER == 0 and WIND == 0:
-            print("No power - Turn all houses lights OFF")
+            # print("No power - Turn all houses lights OFF")
             GPIO.output(HOUSE1_GPIO, GPIO.LOW)
             GPIO.output(HOUSE2_GPIO, GPIO.LOW)
             GPIO.output(HOUSE3_GPIO, GPIO.LOW)
             GPIO.output(HOUSE4_GPIO, GPIO.LOW)
         elif WATER > 0 or WIND > 0:
-            print("We have Wind or Water power - Turn all houses lights ON")
+            # print("We have Wind or Water power - Turn all houses lights ON")
             GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
             GPIO.output(HOUSE2_GPIO, GPIO.HIGH)
             GPIO.output(HOUSE3_GPIO, GPIO.HIGH)
             GPIO.output(HOUSE4_GPIO, GPIO.HIGH)
         elif SOLAR == 1:
-            print("Half Power - Turn 3 houses lights OFF")
+            # print("Half Power - Turn 3 houses lights OFF")
             GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
             GPIO.output(HOUSE2_GPIO, GPIO.LOW)
             GPIO.output(HOUSE3_GPIO, GPIO.LOW)
             GPIO.output(HOUSE4_GPIO, GPIO.LOW)
         elif SOLAR == 2:
-            print("Full Power - Turn all houses lights ON")
+            # print("Full Power - Turn all houses lights ON")
             GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
             GPIO.output(HOUSE2_GPIO, GPIO.HIGH)
             GPIO.output(HOUSE3_GPIO, GPIO.HIGH)
             GPIO.output(HOUSE4_GPIO, GPIO.HIGH)
         else:
-            print("Ummmm")
+            # print("Ummmm")
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 running = False
-        print("Waiting... 1 second.")
-        time.sleep(0.1)
+        #print("Waiting... 1 second.")
+        #time.sleep(0.1)
+        pygame.time.wait(16) # around 60 fps
     # Quit Pygame
     pygame.quit()
     sys.exit()

@@ -112,7 +112,8 @@ def load_movies():
 # Load up the sound files to play
 def load_sounds():
     sounds = {
-        "hydro": "sounds/waterfall.wav",
+        "hydro": "sounds/waterfallmono.wav",
+        "wind": "sounds/wind.wav",
     }
     loaded_sounds = {}
     for name, sound_path in sounds.items():
@@ -341,6 +342,8 @@ def main():
                 WIND = 2
                 # Set the time to now for the wind started
                 wind_started = datetime.datetime.now()
+                # Start playing Wind sounds from the beginning
+                pygame_sounds["wind"].play()
             else:
                 # If the button is not pressed, check to see if the wind has been running for 10 seconds
                 # If it has, stop the wind
@@ -352,6 +355,8 @@ def main():
                         # Set the Relay for Wind Motors GPIO Pins to HIGH
                         GPIO.output(WIND_GPIO, GPIO.HIGH)
                         WIND = 0
+                        # Stop playing the Audio and rewind
+                        pygame_sounds["wind"].stop()
 
             # Display Houses Lights based on SOLAR, Hydro, and Wind power.
             # Full Power

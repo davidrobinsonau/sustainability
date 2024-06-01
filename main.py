@@ -96,7 +96,7 @@ def load_movies():
     loaded_movies = {}
     for name, movie_path in movies.items():
         try:
-            loaded_movie = Video(movie_path, use_pygame_audio=True)
+            loaded_movie = Video(movie_path)  # use_pygame_audio=True Failed.
             loaded_movie.mute()
             if loaded_movie is None:
                 print(f"Movie {movie_path} did not load correctly")

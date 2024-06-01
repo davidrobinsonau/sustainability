@@ -17,6 +17,7 @@ https://github.com/anrayliu/pyvidplayer2/tree/main for Video Playing within PyGa
 
 TODO When Nothing Happening, Make one screen tell the person to Turn the Wheel to move the sun across the day.
 TODO Make an incentive to turn the SUN from one side to the other.
+TODO Time how long it takes to get the sun from one side to the other, display on screen as a way to incentise keeping turning.
 
 # Pi Setup
 J8:

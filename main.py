@@ -54,8 +54,6 @@ HOUSE4_GPIO = 25
 
 # Output for the Motors
 WATER_GPIO = 2
-# When the putton was pushed, in time
-WATER_STARTED = datetime.datetime.now()
 WIND_GPIO = 3
 
 # Has STATE Changed?
@@ -193,7 +191,6 @@ def main():
     global WATER
     global WIND
     global STATE_CHANGED
-    global WATER_STARTED
 
     # Monitor GPIO20 - Sunset
     # GPIO21 - Sun behind clouds.
@@ -257,6 +254,8 @@ def main():
 
     # Record a timer for th Pi Output check, as we only want to run that loop every 0.5 seconds
     last_time = datetime.datetime.now()
+    water_started = datetime.datetime.now()
+    wind_started = datetime.datetime.now()
     while running:
         if pygame_movie.active == True:
             if pygame_movie.draw(pygame_screen, (0, 0), force_draw=False):
@@ -290,17 +289,17 @@ def main():
                 # time.sleep(5)
                 WATER = 2
                 # Set the time to now for the water started
-                WATER_STARTED = datetime.datetime.now()
+                water_started = datetime.datetime.now()
                 # Start Playing the video if not already playing
                 if pygame_movie.active == False:
                     pygame_movie.play()
             else:
-                # If the button is not pressed, check to see if the water has been running for 5 seconds
+                # If the button is not pressed, check to see if the water has been running for 10 seconds
                 # If it has, stop the water
                 if WATER == 2:
-                    # Check to see if the water has been running for 5 seconds
-                    if datetime.datetime.now() - WATER_STARTED > datetime.timedelta(
-                        seconds=5
+                    # Check to see if the water has been running for 10 seconds
+                    if datetime.datetime.now() - water_started > datetime.timedelta(
+                        seconds=10
                     ):
                         # Set the Relay for Water Motors GPIO Pins to HIGH
                         GPIO.output(WATER_GPIO, GPIO.HIGH)
@@ -312,10 +311,19 @@ def main():
                 # Sleep for 5 seconds to simulate the wind turbines spinning up
                 # time.sleep(5)
                 WIND = 2
+                # Set the time to now for the wind started
+                wind_started = datetime.datetime.now()
             else:
-                # Set the Relay for Wind Motors GPIO Pins to HIGH
-                GPIO.output(WIND_GPIO, GPIO.HIGH)
-                WIND = 0
+                # If the button is not pressed, check to see if the wind has been running for 10 seconds
+                # If it has, stop the wind
+                if WIND == 2:
+                    # Check to see if the wind has been running for 10 seconds
+                    if datetime.datetime.now() - wind_started > datetime.timedelta(
+                        seconds=10
+                    ):
+                        # Set the Relay for Wind Motors GPIO Pins to HIGH
+                        GPIO.output(WIND_GPIO, GPIO.HIGH)
+                        WIND = 0
 
             # Display Houses Lights based on SOLAR, Hydro, and Wind power.
             # Full Power

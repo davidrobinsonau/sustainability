@@ -109,6 +109,26 @@ def load_movies():
     return loaded_movies
 
 
+# Load up the sound files to play
+def load_sounds():
+    sounds = {
+        "hydro": "sounds/waterfall.wav",
+    }
+    loaded_sounds = {}
+    for name, sound_path in sounds.items():
+        try:
+            loaded_sound = pygame.mixer.Sound(sound_path)
+            if loaded_sound is None:
+                print(f"Sound {sound_path} did not load correctly")
+            else:
+                print(f"Sound {sound_path} loaded successfully")
+            loaded_sounds[name] = loaded_sound
+        except Exception as e:
+            print(f"Failed to load sound: {sound_path}")
+            print(e)
+    return loaded_sounds
+
+
 def FindDisplayDriver():
     # "x11" won't go full screen on a Raspberry Pi
     os.environ["SDL_VIDEO_WINDOW_POS"] = "0,0"
@@ -222,6 +242,8 @@ def main():
     pygame_images = load_images()
     # Load the Movies
     pygame_movies = load_movies()
+    # Load the Sounds
+    pygame_sounds = load_sounds()
     # Load the left screen image and display on the left side of the screen
     pygame_screen.blit(pygame_images["leftscreen"], (0, 0))
     # Play the movie on the left screen and keep to 1920x1080
@@ -294,6 +316,8 @@ def main():
                 # Start Playing the video if not already playing
                 if pygame_movie.active == False:
                     pygame_movie.play()
+                # Start playing Hydro Water sounds from the beginning
+                pygame_sounds["hydro"].play()
             else:
                 # If the button is not pressed, check to see if the water has been running for 10 seconds
                 # If it has, stop the water
@@ -305,6 +329,9 @@ def main():
                         # Set the Relay for Water Motors GPIO Pins to HIGH
                         GPIO.output(WATER_GPIO, GPIO.HIGH)
                         WATER = 0
+                        # Stop playing the Audio and rewind
+                        pygame_sounds["hydro"].stop()
+
             if GPIO.input(BUTTON2_GPIO) == PI_LOW:
                 # print("Button 2 Pressed")
                 # Set the Relay for Wind Motors GPIO Pins to LOW

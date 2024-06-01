@@ -35,7 +35,7 @@ from pyvidplayer2 import Video
 PI_HIGH = 1
 PI_LOW = 0
 
-# Game States
+# Global Game States
 SOLAR = 0  # 0 = No Sun, 1 = LOW Sunlight, 2 = Full Sun
 WATER = 0  # 0 = No Water, 1 = LOW Water, 2 = Full Water
 WIND = 0  # 0 = No Wind, 1 = LOW Wind, 2 = Full Wind
@@ -188,6 +188,13 @@ def sunshade_action(pygame_screen, pygame_images):
 
 
 def main():
+    # Access Global Variables
+    global SOLAR
+    global WATER
+    global WIND
+    global STATE_CHANGED
+    global WATER_STARTED
+
     # Monitor GPIO20 - Sunset
     # GPIO21 - Sun behind clouds.
 

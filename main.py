@@ -119,6 +119,8 @@ def load_sounds():
     for name, sound_path in sounds.items():
         try:
             loaded_sound = pygame.mixer.Sound(sound_path)
+            # Set volume to 30%
+            loaded_sound.set_volume(0.3)
             if loaded_sound is None:
                 print(f"Sound {sound_path} did not load correctly")
             else:

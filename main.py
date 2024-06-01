@@ -56,6 +56,9 @@ HOUSE4_GPIO = 25
 WATER_GPIO = 2
 WIND_GPIO = 3
 
+# Has STATE Changed?
+STATE_CHANGED = False
+
 
 def load_images():
     # 1920x1080 Pixels for second Screen
@@ -245,8 +248,8 @@ def main():
     while running:
         if pygame_movie.draw(pygame_screen, (0, 0), force_draw=False):
             pygame.display.update()
-        if pygame_movie.active == False:
-            pygame_movie.restart()
+        # if pygame_movie.active == False:
+        # pygame_movie.restart()
 
         # Check the status of the PIN
         if GPIO.input(SUNSET_GPIO) == PI_LOW:
@@ -271,7 +274,9 @@ def main():
             # Sleep for 5 seconds to simulate the water turbines spinning up
             # time.sleep(5)
             WATER = 2
-            # If
+            # Start Playing the video if not already playing
+            if pygame_movie.active == False:
+                pygame_movie.play()
         else:
             # Set the Relay for Water Motors GPIO Pins to HIGH
             GPIO.output(WATER_GPIO, GPIO.HIGH)

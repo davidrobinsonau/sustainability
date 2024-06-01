@@ -54,6 +54,8 @@ HOUSE4_GPIO = 25
 
 # Output for the Motors
 WATER_GPIO = 2
+# When the putton was pushed, in time
+WATER_STARTED = datetime.datetime.now()
 WIND_GPIO = 3
 
 # Has STATE Changed?
@@ -245,88 +247,101 @@ def main():
     # pygame.time.wait(16)  # around 60 fps
     # Watch the PIN status every 1 second
     running = True
+
+    # Record a timer for th Pi Output check, as we only want to run that loop every 0.5 seconds
+    last_time = datetime.datetime.now()
     while running:
         if pygame_movie.draw(pygame_screen, (0, 0), force_draw=False):
             pygame.display.update()
         # if pygame_movie.active == False:
         # pygame_movie.restart()
+        # Check to see if the time is greater than 0.5 seconds as we only check the Pi Outputs every 0.5 seconds to keep any video happy.
+        if datetime.datetime.now() - last_time > datetime.timedelta(seconds=0.5):
+            last_time = datetime.datetime.now()
+            # Check the status of the PIN
+            if GPIO.input(SUNSET_GPIO) == PI_LOW:
+                # print("Sunset")
+                # Set all the houses to LOW
+                SOLAR = 0
+                sunset_action(pygame_screen, pygame_images)
+            elif GPIO.input(SUNBEHIND_GPIO) == PI_LOW:
+                # print("Sun behind Clouds or Hill")
+                SOLAR = 1
+                sunshade_action(pygame_screen, pygame_images)
+            else:
+                # print("Sunrise")
+                # Set all the houses to HIGH
+                SOLAR = 2
+                sunout_action(pygame_screen, pygame_images)
 
-        # Check the status of the PIN
-        if GPIO.input(SUNSET_GPIO) == PI_LOW:
-            # print("Sunset")
-            # Set all the houses to LOW
-            SOLAR = 0
-            sunset_action(pygame_screen, pygame_images)
-        elif GPIO.input(SUNBEHIND_GPIO) == PI_LOW:
-            # print("Sun behind Clouds or Hill")
-            SOLAR = 1
-            sunshade_action(pygame_screen, pygame_images)
-        else:
-            # print("Sunrise")
-            # Set all the houses to HIGH
-            SOLAR = 2
-            sunout_action(pygame_screen, pygame_images)
+            if GPIO.input(BUTTON1_GPIO) == PI_LOW:
+                # print("Button 1 Pressed")
+                # Set the Relay for Water Motors GPIO Pins to LOW
+                GPIO.output(WATER_GPIO, GPIO.LOW)
+                # Sleep for 5 seconds to simulate the water turbines spinning up
+                # time.sleep(5)
+                WATER = 2
+                # Set the time to now for the water started
+                WATER_STARTED = datetime.datetime.now()
+                # Start Playing the video if not already playing
+                if pygame_movie.active == False:
+                    pygame_movie.play()
+            else:
+                # If the button is not pressed, check to see if the water has been running for 5 seconds
+                # If it has, stop the water
+                if WATER == 2:
+                    # Check to see if the water has been running for 5 seconds
+                    if datetime.datetime.now() - WATER_STARTED > datetime.timedelta(
+                        seconds=5
+                    ):
+                        # Set the Relay for Water Motors GPIO Pins to HIGH
+                        GPIO.output(WATER_GPIO, GPIO.HIGH)
+                        WATER = 0
+            if GPIO.input(BUTTON2_GPIO) == PI_LOW:
+                # print("Button 2 Pressed")
+                # Set the Relay for Wind Motors GPIO Pins to LOW
+                GPIO.output(WIND_GPIO, GPIO.LOW)
+                # Sleep for 5 seconds to simulate the wind turbines spinning up
+                # time.sleep(5)
+                WIND = 2
+            else:
+                # Set the Relay for Wind Motors GPIO Pins to HIGH
+                GPIO.output(WIND_GPIO, GPIO.HIGH)
+                WIND = 0
 
-        if GPIO.input(BUTTON1_GPIO) == PI_LOW:
-            # print("Button 1 Pressed")
-            # Set the Relay for Water Motors GPIO Pins to LOW
-            GPIO.output(WATER_GPIO, GPIO.LOW)
-            # Sleep for 5 seconds to simulate the water turbines spinning up
-            # time.sleep(5)
-            WATER = 2
-            # Start Playing the video if not already playing
-            if pygame_movie.active == False:
-                pygame_movie.play()
-        else:
-            # Set the Relay for Water Motors GPIO Pins to HIGH
-            GPIO.output(WATER_GPIO, GPIO.HIGH)
-            WATER = 0
-
-        if GPIO.input(BUTTON2_GPIO) == PI_LOW:
-            # print("Button 2 Pressed")
-            # Set the Relay for Wind Motors GPIO Pins to LOW
-            GPIO.output(WIND_GPIO, GPIO.LOW)
-            # Sleep for 5 seconds to simulate the wind turbines spinning up
-            # time.sleep(5)
-            WIND = 2
-        else:
-            # Set the Relay for Wind Motors GPIO Pins to HIGH
-            GPIO.output(WIND_GPIO, GPIO.HIGH)
-            WIND = 0
-
-        # Display Houses Lights based on SOLAR, Hydro, and Wind power.
-        # Full Power
-        if SOLAR == 0 and WATER == 0 and WIND == 0:
-            # print("No power - Turn all houses lights OFF")
-            GPIO.output(HOUSE1_GPIO, GPIO.LOW)
-            GPIO.output(HOUSE2_GPIO, GPIO.LOW)
-            GPIO.output(HOUSE3_GPIO, GPIO.LOW)
-            GPIO.output(HOUSE4_GPIO, GPIO.LOW)
-        elif WATER > 0 or WIND > 0:
-            # print("We have Wind or Water power - Turn all houses lights ON")
-            GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
-            GPIO.output(HOUSE2_GPIO, GPIO.HIGH)
-            GPIO.output(HOUSE3_GPIO, GPIO.HIGH)
-            GPIO.output(HOUSE4_GPIO, GPIO.HIGH)
-        elif SOLAR == 1:
-            # print("Half Power - Turn 3 houses lights OFF")
-            GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
-            GPIO.output(HOUSE2_GPIO, GPIO.LOW)
-            GPIO.output(HOUSE3_GPIO, GPIO.LOW)
-            GPIO.output(HOUSE4_GPIO, GPIO.LOW)
-        elif SOLAR == 2:
-            # print("Full Power - Turn all houses lights ON")
-            GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
-            GPIO.output(HOUSE2_GPIO, GPIO.HIGH)
-            GPIO.output(HOUSE3_GPIO, GPIO.HIGH)
-            GPIO.output(HOUSE4_GPIO, GPIO.HIGH)
-        else:
-            print("Ummmm")
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                running = False
+            # Display Houses Lights based on SOLAR, Hydro, and Wind power.
+            # Full Power
+            if SOLAR == 0 and WATER == 0 and WIND == 0:
+                # print("No power - Turn all houses lights OFF")
+                GPIO.output(HOUSE1_GPIO, GPIO.LOW)
+                GPIO.output(HOUSE2_GPIO, GPIO.LOW)
+                GPIO.output(HOUSE3_GPIO, GPIO.LOW)
+                GPIO.output(HOUSE4_GPIO, GPIO.LOW)
+            elif WATER > 0 or WIND > 0:
+                # print("We have Wind or Water power - Turn all houses lights ON")
+                GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
+                GPIO.output(HOUSE2_GPIO, GPIO.HIGH)
+                GPIO.output(HOUSE3_GPIO, GPIO.HIGH)
+                GPIO.output(HOUSE4_GPIO, GPIO.HIGH)
+            elif SOLAR == 1:
+                # print("Half Power - Turn 3 houses lights OFF")
+                GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
+                GPIO.output(HOUSE2_GPIO, GPIO.LOW)
+                GPIO.output(HOUSE3_GPIO, GPIO.LOW)
+                GPIO.output(HOUSE4_GPIO, GPIO.LOW)
+            elif SOLAR == 2:
+                # print("Full Power - Turn all houses lights ON")
+                GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
+                GPIO.output(HOUSE2_GPIO, GPIO.HIGH)
+                GPIO.output(HOUSE3_GPIO, GPIO.HIGH)
+                GPIO.output(HOUSE4_GPIO, GPIO.HIGH)
+            else:
+                print("Ummmm")
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    running = False
         # print("Waiting... 1 second.")
         # time.sleep(0.1)
         pygame.time.wait(10)  # around 60 fps

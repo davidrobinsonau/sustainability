@@ -97,6 +97,7 @@ def load_movies():
     for name, movie_path in movies.items():
         try:
             loaded_movie = Video(movie_path)
+            loaded_movie.mute()
             if loaded_movie is None:
                 print(f"Movie {movie_path} did not load correctly")
             else:

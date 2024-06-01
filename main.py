@@ -251,8 +251,9 @@ def main():
     # Record a timer for th Pi Output check, as we only want to run that loop every 0.5 seconds
     last_time = datetime.datetime.now()
     while running:
-        if pygame_movie.draw(pygame_screen, (0, 0), force_draw=False):
-            pygame.display.update()
+        if pygame_movie.active == True:
+            if pygame_movie.draw(pygame_screen, (0, 0), force_draw=False):
+                pygame.display.update()
         # if pygame_movie.active == False:
         # pygame_movie.restart()
         # Check to see if the time is greater than 0.5 seconds as we only check the Pi Outputs every 0.5 seconds to keep any video happy.
@@ -344,7 +345,7 @@ def main():
                     running = False
         # print("Waiting... 1 second.")
         # time.sleep(0.1)
-        pygame.time.wait(10)  # around 60 fps
+        pygame.time.wait(15)  # around 60 fps
     # Quit Pygame
     pygame_movie.stop()
     pygame.quit()

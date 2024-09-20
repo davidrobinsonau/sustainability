@@ -408,21 +408,6 @@ def main():
                 # Start Playing the video if not already playing
                 if pygame_movie.active == False:
                     pygame_movie.play()
-                # Start playing Hydro Water sounds from the beginning
-                pygame_sounds["hydro"].play()
-            else:
-                # If the button is not pressed, check to see if the water has been running for 10 seconds
-                # If it has, stop the water
-                if WATER == 2:
-                    # Check to see if the water has been running for 10 seconds
-                    if datetime.datetime.now() - water_started > datetime.timedelta(
-                        seconds=10
-                    ):
-                        # Set the Relay for Water Motors GPIO Pins to HIGH
-                        GPIO.output(WATER_GPIO, GPIO.HIGH)
-                        WATER = 0
-                        # Stop playing the Audio and rewind
-                        pygame_sounds["hydro"].stop()
 
             if GPIO.input(BUTTON2_GPIO) == PI_LOW:
                 # print("Button 2 Pressed")

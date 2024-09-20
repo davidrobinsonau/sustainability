@@ -198,24 +198,48 @@ def get_screen_resolution():
     return (screen.current_w, screen.current_h)
 
 
-def sunset_action(pygame_screen, pygame_images):
-
-    pygame_screen.blit(pygame_images["startbg"], (1921, 0))
-    pygame_screen.blit(pygame_images["start"], (1921, 0))
-
-
-def sunout_action(channel=None):
+def lights_workflow_engine():
     global SOLAR
+    global WATER
+    global WIND
     global pygame_screen
     global pygame_images
+    # Display Houses Lights based on SOLAR, Hydro, and Wind power.
+    if SOLAR == 0 and WATER == 0 and WIND == 0:
+        # print("No power - Turn all houses lights OFF")
+        GPIO.output(HOUSE1_GPIO, GPIO.LOW)
+        GPIO.output(HOUSE2_GPIO, GPIO.LOW)
+        GPIO.output(HOUSE3_GPIO, GPIO.LOW)
+        GPIO.output(HOUSE4_GPIO, GPIO.LOW)
+        # Display that houses have no power.
+        pygame_screen.blit(pygame_images["sunoutbg"], (1921, 0))
+        pygame_screen.blit(pygame_images["sunout"], (1921, 0))
+    elif WATER > 0 or WIND > 0 or SOLAR > 1:
+        # print("We have Wind or Water power - Turn all houses lights ON")
+        GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
+        GPIO.output(HOUSE2_GPIO, GPIO.HIGH)
+        GPIO.output(HOUSE3_GPIO, GPIO.HIGH)
+        GPIO.output(HOUSE4_GPIO, GPIO.HIGH)
+    elif SOLAR == 1:
+        # print("Half Power - Turn 3 houses lights OFF")
+        GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
+        GPIO.output(HOUSE2_GPIO, GPIO.LOW)
+        GPIO.output(HOUSE3_GPIO, GPIO.LOW)
+        GPIO.output(HOUSE4_GPIO, GPIO.LOW)
+    else:
+        print("Ummmm")
+
+
+def sunset_action(channel=None):
+    global SOLAR
+    SOLAR = 0
+    lights_workflow_engine()
+
+
+def sunrise_action(channel=None):
+    global SOLAR
     SOLAR = 2
-    print("Full Power - Turn all houses lights ON")
-    GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
-    GPIO.output(HOUSE2_GPIO, GPIO.HIGH)
-    GPIO.output(HOUSE3_GPIO, GPIO.HIGH)
-    GPIO.output(HOUSE4_GPIO, GPIO.HIGH)
-    pygame_screen.blit(pygame_images["sunoutbg"], (1921, 0))
-    pygame_screen.blit(pygame_images["sunout"], (1921, 0))
+    lights_workflow_engine()
 
 
 def sunshade_action(pygame_screen, pygame_images):
@@ -299,16 +323,22 @@ def main():
     #
     GPIO.add_event_detect(
         SUNSET_GPIO,
-        GPIO.BOTH,
-        callback=sunout_action,
+        GPIO.RISING,
+        callback=sunrise_action,
+        bouncetime=200,
+    )
+    GPIO.add_event_detect(
+        SUNSET_GPIO,
+        GPIO.FALLING,
+        callback=sunset_action,
         bouncetime=200,
     )
     # button = Button(SUNSET_GPIO)
     # button.when_pressed = sunout_action
 
     # Check initial state of the GPIO for first time load.
-    if GPIO.input(SUNSET_GPIO) == PI_HIGH:
-        sunout_action()
+    # if GPIO.input(SUNSET_GPIO) == PI_HIGH:
+    #    sunrise_action()
 
     # Record a timer for th Pi Output check, as we only want to run that loop every 0.5 seconds
     last_time = datetime.datetime.now()
@@ -393,26 +423,7 @@ def main():
 
             # Display Houses Lights based on SOLAR, Hydro, and Wind power.
             # Full Power
-            if SOLAR == 0 and WATER == 0 and WIND == 0:
-                # print("No power - Turn all houses lights OFF")
-                GPIO.output(HOUSE1_GPIO, GPIO.LOW)
-                GPIO.output(HOUSE2_GPIO, GPIO.LOW)
-                GPIO.output(HOUSE3_GPIO, GPIO.LOW)
-                GPIO.output(HOUSE4_GPIO, GPIO.LOW)
-            elif WATER > 0 or WIND > 0:
-                # print("We have Wind or Water power - Turn all houses lights ON")
-                GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
-                GPIO.output(HOUSE2_GPIO, GPIO.HIGH)
-                GPIO.output(HOUSE3_GPIO, GPIO.HIGH)
-                GPIO.output(HOUSE4_GPIO, GPIO.HIGH)
-            elif SOLAR == 1:
-                # print("Half Power - Turn 3 houses lights OFF")
-                GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
-                GPIO.output(HOUSE2_GPIO, GPIO.LOW)
-                GPIO.output(HOUSE3_GPIO, GPIO.LOW)
-                GPIO.output(HOUSE4_GPIO, GPIO.LOW)
-            else:
-                print("Ummmm")
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False

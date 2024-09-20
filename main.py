@@ -73,7 +73,7 @@ def load_images():
         "sunshadebg": "images/renewableenergybg07.jpg",
         "sunout": "images/renewableenergy03.png",
         "sunoutbg": "images/renewableenergybg03.jpg",
-        "sunset": "images/renewableenergybg09.png",
+        "sunset": "images/renewableenergybg09.jpg",
         "sunsetcontrols": "images/renewableenergy09.png",
         "sunrise": "images/dawn.png",
         "leftscreen": "images/leftmonitor.jpeg",

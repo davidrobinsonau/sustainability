@@ -25,8 +25,8 @@ import sys
 import os
 
 # Trying new GPIO Zero Library
-from gpiozero import Button
-from signal import pause
+# from gpiozero import Button
+# from signal import pause
 
 # Import Pygame Library
 import pygame
@@ -297,14 +297,14 @@ def main():
 
     # Setup event monitoring
     #
-    # GPIO.add_event_detect(
-    #    SUNSET_GPIO,
-    #    GPIO.BOTH,
-    #    callback=sunout_action,
-    #    bouncetime=200,
-    # )
-    button = Button(SUNSET_GPIO)
-    button.when_pressed = sunout_action
+    GPIO.add_event_detect(
+        SUNSET_GPIO,
+        GPIO.BOTH,
+        callback=sunout_action,
+        bouncetime=200,
+    )
+    # button = Button(SUNSET_GPIO)
+    # button.when_pressed = sunout_action
 
     # Check initial state of the GPIO for first time load.
     if GPIO.input(SUNSET_GPIO) == PI_HIGH:

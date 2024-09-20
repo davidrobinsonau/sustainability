@@ -200,8 +200,10 @@ def sunset_action(pygame_screen, pygame_images):
     pygame_screen.blit(pygame_images["start"], (1921, 0))
 
 
-def sunout_action(pygame_screen, pygame_images):
+def sunout_action(channel):
     global SOLAR
+    global pygame_screen
+    global pygame_images
     SOLAR = 2
     # print("Full Power - Turn all houses lights ON")
     GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
@@ -223,6 +225,8 @@ def main():
     global WATER
     global WIND
     global STATE_CHANGED
+    global pygame_screen
+    global pygame_images
 
     # Monitor GPIO20 - Sunset
     # GPIO21 - Sun behind clouds.
@@ -291,7 +295,7 @@ def main():
     GPIO.add_event_detect(
         SUNSET_GPIO,
         GPIO.RISING,
-        callback=sunout_action(pygame_screen, pygame_images),
+        callback=sunout_action,
         bouncetime=200,
     )
 

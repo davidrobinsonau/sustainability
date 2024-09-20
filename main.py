@@ -247,9 +247,25 @@ def workflow_engine():
         pygame_sounds["hydro"].play()
         WATER = 0
         # sleep for 10 seconds to simulate the water turbines spinning up
-        time.sleep(10)
+        time.sleep(8)
         GPIO.output(WATER_GPIO, GPIO.HIGH)
         pygame_sounds["hydro"].stop()
+
+        workflow_engine()
+    elif WIND == 1:
+        # print("Wind Power - Turn 1 house lights ON")
+        GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
+        GPIO.output(HOUSE2_GPIO, GPIO.HIGH)
+        GPIO.output(HOUSE3_GPIO, GPIO.HIGH)
+        GPIO.output(HOUSE4_GPIO, GPIO.HIGH)
+        # Set the Relay for Wind Motors GPIO Pins to LOW
+        GPIO.output(WIND_GPIO, GPIO.LOW)
+        pygame_sounds["wind"].play()
+        # sleep for 5 seconds to simulate the wind turbines spinning up
+        WIND = 0
+        time.sleep(8)
+        GPIO.output(WIND_GPIO, GPIO.HIGH)
+        pygame_sounds["wind"].stop()
 
         workflow_engine()
 
@@ -282,6 +298,12 @@ def sunshade_action(channel=None):
 def hydro_action(channel=None):
     global WATER
     WATER = 1
+    workflow_engine()
+
+
+def wind_action(channel=None):
+    global WIND
+    WIND = 1
     workflow_engine()
 
 
@@ -380,6 +402,12 @@ def main():
         bouncetime=200,
     )
 
+    GPIO.add_event_detect(
+        BUTTON2_GPIO,
+        GPIO.FALLING,
+        callback=wind_action,
+        bouncetime=200,
+    )
     # Check initial state of the GPIO for first time load.
     # if GPIO.input(SUNSET_GPIO) == PI_HIGH:
     #    sunrise_action()
@@ -409,31 +437,6 @@ def main():
                 # Start Playing the video if not already playing
                 if pygame_movie.active == False:
                     pygame_movie.play()
-
-            if GPIO.input(BUTTON2_GPIO) == PI_LOW:
-                # print("Button 2 Pressed")
-                # Set the Relay for Wind Motors GPIO Pins to LOW
-                GPIO.output(WIND_GPIO, GPIO.LOW)
-                # Sleep for 5 seconds to simulate the wind turbines spinning up
-                # time.sleep(5)
-                WIND = 2
-                # Set the time to now for the wind started
-                wind_started = datetime.datetime.now()
-                # Start playing Wind sounds from the beginning
-                pygame_sounds["wind"].play()
-            else:
-                # If the button is not pressed, check to see if the wind has been running for 10 seconds
-                # If it has, stop the wind
-                if WIND == 2:
-                    # Check to see if the wind has been running for 10 seconds
-                    if datetime.datetime.now() - wind_started > datetime.timedelta(
-                        seconds=10
-                    ):
-                        # Set the Relay for Wind Motors GPIO Pins to HIGH
-                        GPIO.output(WIND_GPIO, GPIO.HIGH)
-                        WIND = 0
-                        # Stop playing the Audio and rewind
-                        pygame_sounds["wind"].stop()
 
             # Display Houses Lights based on SOLAR, Hydro, and Wind power.
             # Full Power

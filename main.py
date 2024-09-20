@@ -73,7 +73,8 @@ def load_images():
         "sunshadebg": "images/renewableenergybg07.jpg",
         "sunout": "images/renewableenergy03.png",
         "sunoutbg": "images/renewableenergybg03.jpg",
-        "sunset": "images/dawn.png",
+        "sunset": "images/renewableenergybg09.png",
+        "sunsetcontrols": "images/renewableenergy09.png",
         "sunrise": "images/dawn.png",
         "leftscreen": "images/leftmonitor.jpeg",
     }
@@ -212,14 +213,17 @@ def lights_workflow_engine():
         GPIO.output(HOUSE3_GPIO, GPIO.LOW)
         GPIO.output(HOUSE4_GPIO, GPIO.LOW)
         # Display that houses have no power.
-        pygame_screen.blit(pygame_images["sunoutbg"], (1921, 0))
-        pygame_screen.blit(pygame_images["sunout"], (1921, 0))
+        pygame_screen.blit(pygame_images["sunset"], (1921, 0))
+        pygame_screen.blit(pygame_images["sunsetcontrols"], (1921, 0))
+
     elif WATER > 0 or WIND > 0 or SOLAR > 1:
         # print("We have Wind or Water power - Turn all houses lights ON")
         GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
         GPIO.output(HOUSE2_GPIO, GPIO.HIGH)
         GPIO.output(HOUSE3_GPIO, GPIO.HIGH)
         GPIO.output(HOUSE4_GPIO, GPIO.HIGH)
+        pygame_screen.blit(pygame_images["sunoutbg"], (1921, 0))
+        pygame_screen.blit(pygame_images["sunout"], (1921, 0))
     elif SOLAR == 1:
         # print("Half Power - Turn 3 houses lights OFF")
         GPIO.output(HOUSE1_GPIO, GPIO.HIGH)

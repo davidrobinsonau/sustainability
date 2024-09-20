@@ -301,7 +301,7 @@ def main():
 
     # Check initial state of the GPIO for first time load.
     if GPIO.input(SUNSET_GPIO) == PI_HIGH:
-        sunout_action(pygame_screen, pygame_images)
+        sunout_action()
 
     # Record a timer for th Pi Output check, as we only want to run that loop every 0.5 seconds
     last_time = datetime.datetime.now()

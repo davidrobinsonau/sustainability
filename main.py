@@ -426,7 +426,8 @@ def main():
                     if event.key == pygame.K_s:
                         # Code to handle "s" key press event
                         # Add your logic here
-                        sunout_action(pygame_screen, pygame_images)
+                        SOLAR = 2
+                        lights_workflow_engine()
         # print("Waiting... 1 second.")
         # time.sleep(0.1)
         pygame.time.wait(15)  # around 60 fps

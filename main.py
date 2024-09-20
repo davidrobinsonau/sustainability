@@ -200,7 +200,7 @@ def sunset_action(pygame_screen, pygame_images):
     pygame_screen.blit(pygame_images["start"], (1921, 0))
 
 
-def sunout_action():
+def sunout_action(channel=None):
     global SOLAR
     global pygame_screen
     global pygame_images

@@ -79,6 +79,8 @@ def load_images():
         "leftscreen": "images/leftmonitor.jpeg",
         "hydro": "images/renewableenergy02.png",
         "hydrobg": "images/renewableenergybg08.jpg",
+        "wind": "images/renewableenergy05.png",
+        "windbg": "images/renewableenergybg05.jpg",
     }
     loaded_images = {}
     for name, image_path in images.items():
@@ -258,6 +260,8 @@ def workflow_engine():
         GPIO.output(HOUSE2_GPIO, GPIO.HIGH)
         GPIO.output(HOUSE3_GPIO, GPIO.HIGH)
         GPIO.output(HOUSE4_GPIO, GPIO.HIGH)
+        pygame_screen.blit(pygame_images["windbg"], (1921, 0))
+        pygame_screen.blit(pygame_images["wind"], (1921, 0))
         # Set the Relay for Wind Motors GPIO Pins to LOW
         GPIO.output(WIND_GPIO, GPIO.LOW)
         pygame_sounds["wind"].play()

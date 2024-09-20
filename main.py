@@ -318,10 +318,10 @@ def main():
                 # print("Sun behind Clouds or Hill")
                 SOLAR = 1
                 sunshade_action(pygame_screen, pygame_images)
-            else:
-                # print("Sunrise")
-                # Set all the houses to HIGH
-                # sunout_action(pygame_screen, pygame_images)
+            # else:
+            # print("Sunrise")
+            # Set all the houses to HIGH
+            # sunout_action(pygame_screen, pygame_images)
 
             if GPIO.input(BUTTON1_GPIO) == PI_LOW:
                 # print("Button 1 Pressed")

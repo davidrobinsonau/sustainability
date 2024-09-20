@@ -247,7 +247,6 @@ def workflow_engine():
         # Set the Relay for Water Motors GPIO Pins to LOW
         GPIO.output(WATER_GPIO, GPIO.LOW)
         pygame_sounds["hydro"].play()
-        WATER = 0
         # sleep for 10 seconds to simulate the water turbines spinning up
         time.sleep(8)
         GPIO.output(WATER_GPIO, GPIO.HIGH)
@@ -267,7 +266,6 @@ def workflow_engine():
         GPIO.output(WIND_GPIO, GPIO.LOW)
         pygame_sounds["wind"].play()
         # sleep for 5 seconds to simulate the wind turbines spinning up
-        WIND = 0
         time.sleep(8)
         GPIO.output(WIND_GPIO, GPIO.HIGH)
         pygame_sounds["wind"].stop()

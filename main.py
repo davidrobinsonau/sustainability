@@ -246,7 +246,7 @@ def sunrise_sunset_action(channel=None):
     lights_workflow_engine()
 
 
-def sunshade_action(pygame_screen, pygame_images):
+def sunshade_action(channel=None):
     # This is an Event, the sun has gone behind the clouds or hill OR it has returned from the clouds or hill.
     global SOLAR
     if GPIO.input(SUNBEHIND_GPIO) == PI_LOW:
@@ -337,7 +337,12 @@ def main():
         callback=sunrise_sunset_action,
         bouncetime=200,
     )
-
+    GPIO.add_event_detect(
+        SUNBEHIND_GPIO,
+        GPIO.BOTH,
+        callback=sunshade_action,
+        bouncetime=200,
+    )
     # button = Button(SUNSET_GPIO)
     # button.when_pressed = sunout_action
 

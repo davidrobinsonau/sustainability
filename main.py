@@ -77,6 +77,8 @@ def load_images():
         "sunsetcontrols": "images/renewableenergy09.png",
         "sunrise": "images/dawn.png",
         "leftscreen": "images/leftmonitor.jpeg",
+        "hydro": "images/renewableenergy02.png",
+        "hydrobg": "images/renewableenergybg08.jpg",
     }
     loaded_images = {}
     for name, image_path in images.items():
@@ -199,7 +201,7 @@ def get_screen_resolution():
     return (screen.current_w, screen.current_h)
 
 
-def lights_workflow_engine():
+def workflow_engine():
     global SOLAR
     global WATER
     global WIND
@@ -231,6 +233,22 @@ def lights_workflow_engine():
         GPIO.output(HOUSE4_GPIO, GPIO.HIGH)
         pygame_screen.blit(pygame_images["sunoutbg"], (1921, 0))
         pygame_screen.blit(pygame_images["sunout"], (1921, 0))
+    elif WATER == 1:
+        # print("Hydro Power - Turn 2 houses lights ON")
+        GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
+        GPIO.output(HOUSE2_GPIO, GPIO.HIGH)
+        GPIO.output(HOUSE3_GPIO, GPIO.HIGH)
+        GPIO.output(HOUSE4_GPIO, GPIO.HIGH)
+        pygame_screen.blit(pygame_images["hydrobg"], (1921, 0))
+        pygame_screen.blit(pygame_images["hydro"], (1921, 0))
+        # Set the Relay for Water Motors GPIO Pins to LOW
+        GPIO.output(WATER_GPIO, GPIO.LOW)
+        # sleep for 10 seconds to simulate the water turbines spinning up
+        time.sleep(10)
+        GPIO.output(WATER_GPIO, GPIO.HIGH)
+        WATER = 0
+        workflow_engine()
+
     else:
         print("Ummmm")
 
@@ -243,7 +261,7 @@ def sunrise_sunset_action(channel=None):
         SOLAR = 0
     else:
         SOLAR = 2
-    lights_workflow_engine()
+    workflow_engine()
 
 
 def sunshade_action(channel=None):
@@ -254,7 +272,13 @@ def sunshade_action(channel=None):
         SOLAR = 1
     else:
         SOLAR = 2
-    lights_workflow_engine()
+    workflow_engine()
+
+
+def hydro_action(channel=None):
+    global WATER
+    WATER = 1
+    workflow_engine()
 
 
 def main():
@@ -343,8 +367,13 @@ def main():
         callback=sunshade_action,
         bouncetime=200,
     )
-    # button = Button(SUNSET_GPIO)
-    # button.when_pressed = sunout_action
+
+    GPIO.add_event_detect(
+        BUTTON1_GPIO,
+        GPIO.FALLING,
+        callback=hydro_action,
+        bouncetime=200,
+    )
 
     # Check initial state of the GPIO for first time load.
     # if GPIO.input(SUNSET_GPIO) == PI_HIGH:

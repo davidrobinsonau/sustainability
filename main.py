@@ -205,7 +205,7 @@ def sunout_action(channel=None):
     global pygame_screen
     global pygame_images
     SOLAR = 2
-    # print("Full Power - Turn all houses lights ON")
+    print("Full Power - Turn all houses lights ON")
     GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
     GPIO.output(HOUSE2_GPIO, GPIO.HIGH)
     GPIO.output(HOUSE3_GPIO, GPIO.HIGH)
@@ -294,7 +294,7 @@ def main():
     # Setup event monitoring
     GPIO.add_event_detect(
         SUNSET_GPIO,
-        GPIO.RISING,
+        GPIO.BOTH,
         callback=sunout_action,
         bouncetime=200,
     )

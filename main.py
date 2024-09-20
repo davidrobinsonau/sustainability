@@ -207,6 +207,7 @@ def workflow_engine():
     global WIND
     global pygame_screen
     global pygame_images
+    global pygame_sounds
     # Display Houses Lights based on SOLAR, Hydro, and Wind power.
     if SOLAR == 0 and WATER == 0 and WIND == 0:
         # print("No power - Turn all houses lights OFF")
@@ -243,9 +244,11 @@ def workflow_engine():
         pygame_screen.blit(pygame_images["hydro"], (1921, 0))
         # Set the Relay for Water Motors GPIO Pins to LOW
         GPIO.output(WATER_GPIO, GPIO.LOW)
+        pygame_sounds["hydro"].play()
         # sleep for 10 seconds to simulate the water turbines spinning up
         time.sleep(10)
         GPIO.output(WATER_GPIO, GPIO.HIGH)
+        pygame_sounds["hydro"].stop()
         WATER = 0
         workflow_engine()
 
@@ -289,6 +292,7 @@ def main():
     global STATE_CHANGED
     global pygame_screen
     global pygame_images
+    global pygame_sounds
 
     # Monitor GPIO20 - Sunset
     # GPIO21 - Sun behind clouds.
@@ -401,13 +405,6 @@ def main():
 
             if GPIO.input(BUTTON1_GPIO) == PI_LOW:
                 # print("Button 1 Pressed")
-                # Set the Relay for Water Motors GPIO Pins to LOW
-                GPIO.output(WATER_GPIO, GPIO.LOW)
-                # Sleep for 5 seconds to simulate the water turbines spinning up
-                # time.sleep(5)
-                WATER = 2
-                # Set the time to now for the water started
-                water_started = datetime.datetime.now()
                 # Start Playing the video if not already playing
                 if pygame_movie.active == False:
                     pygame_movie.play()

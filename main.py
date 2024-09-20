@@ -250,9 +250,8 @@ def workflow_engine():
         # sleep for 10 seconds to simulate the water turbines spinning up
         time.sleep(8)
         GPIO.output(WATER_GPIO, GPIO.HIGH)
-        pygame_sounds["hydro"].stop()
         WATER = 0
-
+        pygame_sounds["hydro"].stop()
         workflow_engine()
     elif WIND == 1:
         # print("Wind Power - Turn 1 house lights ON")
@@ -268,9 +267,8 @@ def workflow_engine():
         # sleep for 5 seconds to simulate the wind turbines spinning up
         time.sleep(8)
         GPIO.output(WIND_GPIO, GPIO.HIGH)
-        pygame_sounds["wind"].stop()
         WIND = 0
-
+        pygame_sounds["wind"].stop()
         workflow_engine()
 
     else:

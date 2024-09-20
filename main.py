@@ -252,6 +252,7 @@ def workflow_engine():
         time.sleep(8)
         GPIO.output(WATER_GPIO, GPIO.HIGH)
         pygame_sounds["hydro"].stop()
+        WATER = 0
 
         workflow_engine()
     elif WIND == 1:
@@ -270,6 +271,7 @@ def workflow_engine():
         time.sleep(8)
         GPIO.output(WIND_GPIO, GPIO.HIGH)
         pygame_sounds["wind"].stop()
+        WIND = 0
 
         workflow_engine()
 
@@ -301,12 +303,18 @@ def sunshade_action(channel=None):
 
 def hydro_action(channel=None):
     global WATER
+    # check if WATER is already 1
+    if WATER == 1:
+        return
     WATER = 1
     workflow_engine()
 
 
 def wind_action(channel=None):
     global WIND
+    # check if WIND is already 1
+    if WIND == 1:
+        return
     WIND = 1
     workflow_engine()
 

@@ -230,15 +230,14 @@ def lights_workflow_engine():
         print("Ummmm")
 
 
-def sunset_action(channel=None):
+def sunrise_sunset_action(channel=None):
     global SOLAR
-    SOLAR = 0
-    lights_workflow_engine()
-
-
-def sunrise_action(channel=None):
-    global SOLAR
-    SOLAR = 2
+    if GPIO.input(SUNSET_GPIO) == PI_LOW:
+        # print("Sunset")
+        # Set all the houses to LOW
+        SOLAR = 0
+    else:
+        SOLAR = 2
     lights_workflow_engine()
 
 
@@ -323,16 +322,11 @@ def main():
     #
     GPIO.add_event_detect(
         SUNSET_GPIO,
-        GPIO.RISING,
-        callback=sunrise_action,
+        GPIO.BOTH,
+        callback=sunrise_sunset_action,
         bouncetime=200,
     )
-    GPIO.add_event_detect(
-        SUNSET_GPIO,
-        GPIO.FALLING,
-        callback=sunset_action,
-        bouncetime=200,
-    )
+
     # button = Button(SUNSET_GPIO)
     # button.when_pressed = sunout_action
 
@@ -354,12 +348,7 @@ def main():
         if datetime.datetime.now() - last_time > datetime.timedelta(seconds=0.4):
             last_time = datetime.datetime.now()
             # Check the status of the PIN
-            if GPIO.input(SUNSET_GPIO) == PI_LOW:
-                # print("Sunset")
-                # Set all the houses to LOW
-                SOLAR = 0
-                sunset_action(pygame_screen, pygame_images)
-            elif GPIO.input(SUNBEHIND_GPIO) == PI_LOW:
+            if GPIO.input(SUNBEHIND_GPIO) == PI_LOW:
                 # print("Sun behind Clouds or Hill")
                 SOLAR = 1
                 sunshade_action(pygame_screen, pygame_images)

@@ -73,7 +73,7 @@ def load_images():
         "sunshadebg": "images/renewableenergybg07.jpg",
         "sunout": "images/renewableenergy03.png",
         "sunoutbg": "images/renewableenergybg03.jpg",
-        "sunset": "images/renewableenergybg09.jpg",
+        "sunset": "images/renewableenergybg10.jpg",
         "sunsetcontrols": "images/renewableenergy09.png",
         "sunrise": "images/dawn.png",
         "leftscreen": "images/leftmonitor.jpeg",
@@ -215,21 +215,22 @@ def lights_workflow_engine():
         # Display that houses have no power.
         pygame_screen.blit(pygame_images["sunset"], (1921, 0))
         pygame_screen.blit(pygame_images["sunsetcontrols"], (1921, 0))
-
-    elif WATER > 0 or WIND > 0 or SOLAR > 1:
-        # print("We have Wind or Water power - Turn all houses lights ON")
+    elif SOLAR == 1 and WATER == 0 and WIND == 0:
+        # print("Half Power - Turn 3 houses lights OFF")
+        GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
+        GPIO.output(HOUSE2_GPIO, GPIO.LOW)
+        GPIO.output(HOUSE3_GPIO, GPIO.LOW)
+        GPIO.output(HOUSE4_GPIO, GPIO.LOW)
+        pygame_screen.blit(pygame_images["sunshadebg"], (1921, 0))
+        pygame_screen.blit(pygame_images["sunshade"], (1921, 0))
+    elif SOLAR == 2 and WATER == 0 and WIND == 0:
+        # print("We have SUN - Turn all houses lights ON")
         GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
         GPIO.output(HOUSE2_GPIO, GPIO.HIGH)
         GPIO.output(HOUSE3_GPIO, GPIO.HIGH)
         GPIO.output(HOUSE4_GPIO, GPIO.HIGH)
         pygame_screen.blit(pygame_images["sunoutbg"], (1921, 0))
         pygame_screen.blit(pygame_images["sunout"], (1921, 0))
-    elif SOLAR == 1:
-        # print("Half Power - Turn 3 houses lights OFF")
-        GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
-        GPIO.output(HOUSE2_GPIO, GPIO.LOW)
-        GPIO.output(HOUSE3_GPIO, GPIO.LOW)
-        GPIO.output(HOUSE4_GPIO, GPIO.LOW)
     else:
         print("Ummmm")
 
@@ -246,8 +247,14 @@ def sunrise_sunset_action(channel=None):
 
 
 def sunshade_action(pygame_screen, pygame_images):
-    pygame_screen.blit(pygame_images["sunshadebg"], (1921, 0))
-    pygame_screen.blit(pygame_images["sunshade"], (1921, 0))
+    # This is an Event, the sun has gone behind the clouds or hill OR it has returned from the clouds or hill.
+    global SOLAR
+    if GPIO.input(SUNBEHIND_GPIO) == PI_LOW:
+        # print("Sun behind Clouds or Hill")
+        SOLAR = 1
+    else:
+        SOLAR = 2
+    lights_workflow_engine()
 
 
 def main():
@@ -352,10 +359,7 @@ def main():
         if datetime.datetime.now() - last_time > datetime.timedelta(seconds=0.4):
             last_time = datetime.datetime.now()
             # Check the status of the PIN
-            if GPIO.input(SUNBEHIND_GPIO) == PI_LOW:
-                # print("Sun behind Clouds or Hill")
-                SOLAR = 1
-                sunshade_action(pygame_screen, pygame_images)
+
             # else:
             # print("Sunrise")
             # Set all the houses to HIGH

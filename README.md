@@ -6,6 +6,8 @@ https://github.com/anrayliu/pyvidplayer2/blob/main/examples/video_demo.py
 
 For Andrew:
 Add solar panels to houses. As there is no solar panels in display.
+Sun fell off 2024-06-15 
+Need phillips screwdriver in store room for fixing things.
 
 # Software Language
 Python 3

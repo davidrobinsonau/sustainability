@@ -91,7 +91,7 @@ def load_images():
 def load_movies():
     # 1920x1080 Pixels for Screen
     movies = {
-        "hydro": "images/howdoeshydropowerwork.mp4",
+        "hydro": "images/howdoeshydropowerwork1080p.mp4",
     }
     loaded_movies = {}
     for name, movie_path in movies.items():
@@ -195,11 +195,19 @@ def get_screen_resolution():
 
 
 def sunset_action(pygame_screen, pygame_images):
+
     pygame_screen.blit(pygame_images["startbg"], (1921, 0))
     pygame_screen.blit(pygame_images["start"], (1921, 0))
 
 
 def sunout_action(pygame_screen, pygame_images):
+    global SOLAR
+    SOLAR = 2
+    # print("Full Power - Turn all houses lights ON")
+    GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
+    GPIO.output(HOUSE2_GPIO, GPIO.HIGH)
+    GPIO.output(HOUSE3_GPIO, GPIO.HIGH)
+    GPIO.output(HOUSE4_GPIO, GPIO.HIGH)
     pygame_screen.blit(pygame_images["sunoutbg"], (1921, 0))
     pygame_screen.blit(pygame_images["sunout"], (1921, 0))
 
@@ -227,6 +235,7 @@ def main():
 
     # Set the Line Sensor GPIO pins to pull up
     GPIO.setup(SUNSET_GPIO, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
     GPIO.setup(SUNBEHIND_GPIO, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     # Set the Relay for Motors GPIO Pins to Output and set to HIGH
     GPIO.setup(WATER_GPIO, GPIO.OUT, initial=GPIO.HIGH)  # Water Turbine
@@ -272,11 +281,19 @@ def main():
     pygame.display.flip()
     pygame_movie = pygame_movies["hydro"]
     # Set screen size to full screen
-    pygame_movie.change_resolution(1080)
+    # pygame_movie.change_resolution(1080) # Updated Move to 1080p to see if it works better.
 
     # pygame.time.wait(16)  # around 60 fps
     # Watch the PIN status every 1 second
     running = True
+
+    # Setup event monitoring
+    GPIO.add_event_detect(
+        SUNSET_GPIO,
+        GPIO.RISING,
+        callback=sunout_action(pygame_screen, pygame_images),
+        bouncetime=200,
+    )
 
     # Record a timer for th Pi Output check, as we only want to run that loop every 0.5 seconds
     last_time = datetime.datetime.now()
@@ -288,8 +305,8 @@ def main():
                 pygame.display.update()
         # if pygame_movie.active == False:
         # pygame_movie.restart()
-        # Check to see if the time is greater than 0.5 seconds as we only check the Pi Outputs every 0.5 seconds to keep any video happy.
-        if datetime.datetime.now() - last_time > datetime.timedelta(seconds=0.5):
+        # Check to see if the time is greater than 0.5 seconds as we only check the Pi Outputs every 0.4 seconds to keep any video happy.
+        if datetime.datetime.now() - last_time > datetime.timedelta(seconds=0.4):
             last_time = datetime.datetime.now()
             # Check the status of the PIN
             if GPIO.input(SUNSET_GPIO) == PI_LOW:
@@ -304,8 +321,7 @@ def main():
             else:
                 # print("Sunrise")
                 # Set all the houses to HIGH
-                SOLAR = 2
-                sunout_action(pygame_screen, pygame_images)
+                # sunout_action(pygame_screen, pygame_images)
 
             if GPIO.input(BUTTON1_GPIO) == PI_LOW:
                 # print("Button 1 Pressed")
@@ -380,12 +396,6 @@ def main():
                 GPIO.output(HOUSE2_GPIO, GPIO.LOW)
                 GPIO.output(HOUSE3_GPIO, GPIO.LOW)
                 GPIO.output(HOUSE4_GPIO, GPIO.LOW)
-            elif SOLAR == 2:
-                # print("Full Power - Turn all houses lights ON")
-                GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
-                GPIO.output(HOUSE2_GPIO, GPIO.HIGH)
-                GPIO.output(HOUSE3_GPIO, GPIO.HIGH)
-                GPIO.output(HOUSE4_GPIO, GPIO.HIGH)
             else:
                 print("Ummmm")
             for event in pygame.event.get():
@@ -393,6 +403,11 @@ def main():
                     running = False
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     running = False
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_s:
+                        # Code to handle "s" key press event
+                        # Add your logic here
+                        sunout_action(pygame_screen, pygame_images)
         # print("Waiting... 1 second.")
         # time.sleep(0.1)
         pygame.time.wait(15)  # around 60 fps

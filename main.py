@@ -394,27 +394,27 @@ def main():
         SUNSET_GPIO,
         GPIO.BOTH,
         callback=sunrise_sunset_action,
-        bouncetime=200,
+        bouncetime=300,
     )
     GPIO.add_event_detect(
         SUNBEHIND_GPIO,
         GPIO.BOTH,
         callback=sunshade_action,
-        bouncetime=200,
+        bouncetime=300,
     )
 
     GPIO.add_event_detect(
         BUTTON1_GPIO,
         GPIO.FALLING,
         callback=hydro_action,
-        bouncetime=200,
+        bouncetime=300,
     )
 
     GPIO.add_event_detect(
         BUTTON2_GPIO,
         GPIO.FALLING,
         callback=wind_action,
-        bouncetime=200,
+        bouncetime=300,
     )
     # Check initial state of the GPIO for first time load.
     # if GPIO.input(SUNSET_GPIO) == PI_HIGH:
@@ -428,17 +428,21 @@ def main():
         if pygame_movie.active == True:
             if pygame_movie.draw(pygame_screen, (0, 0), force_draw=False):
                 pygame.display.update()
+
         # if pygame_movie.active == False:
         # pygame_movie.restart()
         # Check to see if the time is greater than 0.5 seconds as we only check the Pi Outputs every 0.4 seconds to keep any video happy.
         if datetime.datetime.now() - last_time > datetime.timedelta(seconds=0.4):
             last_time = datetime.datetime.now()
             # Check the status of the PIN
-
-            # else:
-            # print("Sunrise")
-            # Set all the houses to HIGH
-            # sunout_action(pygame_screen, pygame_images)
+            # Print out status of global variables
+            # print(f"SOLAR: {SOLAR}, WATER: {WATER}, WIND: {WIND}")
+            draw_text(
+                pygame_screen,
+                f"SOLAR: {SOLAR}, WATER: {WATER}, WIND: {WIND}",
+                2000,
+                140,
+            )
 
             if GPIO.input(BUTTON1_GPIO) == PI_LOW:
                 # print("Button 1 Pressed")

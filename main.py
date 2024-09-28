@@ -250,7 +250,6 @@ def workflow_engine():
             pygame_sounds["hydro"].stop()
         else:
             # print("Hydro Power - Turn 2 houses lights ON")
-            water_started = datetime.datetime.now()
             GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
             GPIO.output(HOUSE2_GPIO, GPIO.HIGH)
             GPIO.output(HOUSE3_GPIO, GPIO.HIGH)
@@ -308,6 +307,7 @@ def hydro_action(channel=None):
     global WATER
     # check if WATER is already 1
     WATER = 1
+    water_started = datetime.datetime.now()
 
 
 def wind_action(channel=None):

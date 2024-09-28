@@ -215,6 +215,7 @@ def workflow_engine():
     global pygame_images
     global pygame_sounds
     global water_started
+    global wind_started
     # Display Houses Lights based on SOLAR, Hydro, and Wind power.
     if SOLAR == 0 and WATER == 0 and WIND == 0:
         # print("No power - Turn all houses lights OFF")
@@ -263,23 +264,22 @@ def workflow_engine():
             pygame_sounds["hydro"].play()
             # sleep for 10 seconds to simulate the water turbines spinning up
     elif WIND == 1:
-        # print("Wind Power - Turn 1 house lights ON")
-        wind_started = datetime.datetime.now()
-        GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
-        GPIO.output(HOUSE2_GPIO, GPIO.HIGH)
-        GPIO.output(HOUSE3_GPIO, GPIO.HIGH)
-        GPIO.output(HOUSE4_GPIO, GPIO.HIGH)
-        pygame_screen.blit(pygame_images["windbg"], (1921, 0))
-        pygame_screen.blit(pygame_images["wind"], (1921, 0))
-        pygame.display.update()
-        # Set the Relay for Wind Motors GPIO Pins to LOW
-        GPIO.output(WIND_GPIO, GPIO.LOW)
-        pygame_sounds["wind"].play()
-        # sleep for 5 seconds to simulate the wind turbines spinning up
-        time.sleep(8)
-        GPIO.output(WIND_GPIO, GPIO.HIGH)
-        WIND = 0
-        pygame_sounds["wind"].stop()
+        if datetime.datetime.now() - wind_started > datetime.timedelta(seconds=8):
+            GPIO.output(WIND_GPIO, GPIO.HIGH)
+            WIND = 0
+            pygame_sounds["wind"].stop()
+        else:
+            # print("Wind Power - Turn 1 house lights ON")
+            GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
+            GPIO.output(HOUSE2_GPIO, GPIO.HIGH)
+            GPIO.output(HOUSE3_GPIO, GPIO.HIGH)
+            GPIO.output(HOUSE4_GPIO, GPIO.HIGH)
+            pygame_screen.blit(pygame_images["windbg"], (1921, 0))
+            pygame_screen.blit(pygame_images["wind"], (1921, 0))
+            pygame.display.update()
+            # Set the Relay for Wind Motors GPIO Pins to LOW
+            GPIO.output(WIND_GPIO, GPIO.LOW)
+            pygame_sounds["wind"].play()
     else:
         print("Ummmm")
 
@@ -314,6 +314,8 @@ def hydro_action(channel=None):
 
 def wind_action(channel=None):
     global WIND
+    global wind_started
+    wind_started = datetime.datetime.now()
     WIND = 1
 
 

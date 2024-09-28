@@ -423,7 +423,7 @@ def main():
         # if pygame_movie.active == False:
         # pygame_movie.restart()
         # Check to see if the time is greater than 0.5 seconds as we only check the Pi Outputs every 0.4 seconds to keep any video happy.
-        if datetime.datetime.now() - last_time > datetime.timedelta(seconds=0.4):
+        if datetime.datetime.now() - last_time > datetime.timedelta(seconds=0.1):
             last_time = datetime.datetime.now()
             # Check the status of the PIN
             # Print out status of global variables

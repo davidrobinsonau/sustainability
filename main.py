@@ -398,27 +398,27 @@ def main():
         SUNSET_GPIO,
         GPIO.BOTH,
         callback=sunrise_sunset_action,
-        bouncetime=300,
+        bouncetime=200,
     )
     GPIO.add_event_detect(
         SUNBEHIND_GPIO,
         GPIO.BOTH,
         callback=sunshade_action,
-        bouncetime=300,
+        bouncetime=200,
     )
 
     GPIO.add_event_detect(
         BUTTON1_GPIO,
         GPIO.FALLING,
         callback=hydro_action,
-        bouncetime=300,
+        bouncetime=100,
     )
 
     GPIO.add_event_detect(
         BUTTON2_GPIO,
         GPIO.FALLING,
         callback=wind_action,
-        bouncetime=300,
+        bouncetime=100,
     )
     # Check initial state of the GPIO for first time load.
     # if GPIO.input(SUNSET_GPIO) == PI_HIGH:

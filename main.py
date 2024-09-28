@@ -214,6 +214,7 @@ def workflow_engine():
     global pygame_screen
     global pygame_images
     global pygame_sounds
+    global water_started
     # Display Houses Lights based on SOLAR, Hydro, and Wind power.
     if SOLAR == 0 and WATER == 0 and WIND == 0:
         # print("No power - Turn all houses lights OFF")
@@ -305,6 +306,7 @@ def sunshade_action(channel=None):
 
 def hydro_action(channel=None):
     global WATER
+    global water_started
     # check if WATER is already 1
     WATER = 1
     water_started = datetime.datetime.now()

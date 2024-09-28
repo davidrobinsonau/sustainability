@@ -283,7 +283,6 @@ def sunrise_sunset_action(channel=None):
         SOLAR = 0
     else:
         SOLAR = 2
-    workflow_engine()
 
 
 def sunshade_action(channel=None):
@@ -294,25 +293,17 @@ def sunshade_action(channel=None):
         SOLAR = 1
     else:
         SOLAR = 2
-    workflow_engine()
 
 
 def hydro_action(channel=None):
     global WATER
     # check if WATER is already 1
-    if WATER == 1:
-        return
     WATER = 1
-    workflow_engine()
 
 
 def wind_action(channel=None):
     global WIND
-    # check if WIND is already 1
-    if WIND == 1:
-        return
     WIND = 1
-    workflow_engine()
 
 
 def main():
@@ -389,7 +380,7 @@ def main():
     running = True
 
     # Setup event monitoring
-    #
+    # Note the callback functions are run sequentially, not concurrently. This is because there is only one thread used for callbacks, in which every callback is run, in the order in which they have been defined.
     GPIO.add_event_detect(
         SUNSET_GPIO,
         GPIO.BOTH,
@@ -443,6 +434,8 @@ def main():
                 2000,
                 140,
             )
+            # Run the workflow engine to check the status of the GPIO and update the screen
+            workflow_engine()
 
             if GPIO.input(BUTTON1_GPIO) == PI_LOW:
                 # print("Button 1 Pressed")

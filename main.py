@@ -203,6 +203,10 @@ def get_screen_resolution():
     return (screen.current_w, screen.current_h)
 
 
+water_started = datetime.datetime.now()
+wind_started = datetime.datetime.now()
+
+
 def workflow_engine():
     global SOLAR
     global WATER
@@ -240,24 +244,27 @@ def workflow_engine():
         pygame_screen.blit(pygame_images["sunout"], (1921, 0))
         pygame.display.update()
     elif WATER == 1:
-        # print("Hydro Power - Turn 2 houses lights ON")
-        GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
-        GPIO.output(HOUSE2_GPIO, GPIO.HIGH)
-        GPIO.output(HOUSE3_GPIO, GPIO.HIGH)
-        GPIO.output(HOUSE4_GPIO, GPIO.HIGH)
-        pygame_screen.blit(pygame_images["hydrobg"], (1921, 0))
-        pygame_screen.blit(pygame_images["hydro"], (1921, 0))
-        pygame.display.update()
-        # Set the Relay for Water Motors GPIO Pins to LOW
-        GPIO.output(WATER_GPIO, GPIO.LOW)
-        pygame_sounds["hydro"].play()
-        # sleep for 10 seconds to simulate the water turbines spinning up
-        time.sleep(8)
-        GPIO.output(WATER_GPIO, GPIO.HIGH)
-        WATER = 0
-        pygame_sounds["hydro"].stop()
+        if datetime.datetime.now() - water_started > datetime.timedelta(seconds=8):
+            GPIO.output(WATER_GPIO, GPIO.HIGH)
+            WATER = 0
+            pygame_sounds["hydro"].stop()
+        else:
+            # print("Hydro Power - Turn 2 houses lights ON")
+            water_started = datetime.datetime.now()
+            GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
+            GPIO.output(HOUSE2_GPIO, GPIO.HIGH)
+            GPIO.output(HOUSE3_GPIO, GPIO.HIGH)
+            GPIO.output(HOUSE4_GPIO, GPIO.HIGH)
+            pygame_screen.blit(pygame_images["hydrobg"], (1921, 0))
+            pygame_screen.blit(pygame_images["hydro"], (1921, 0))
+            pygame.display.update()
+            # Set the Relay for Water Motors GPIO Pins to LOW
+            GPIO.output(WATER_GPIO, GPIO.LOW)
+            pygame_sounds["hydro"].play()
+            # sleep for 10 seconds to simulate the water turbines spinning up
     elif WIND == 1:
         # print("Wind Power - Turn 1 house lights ON")
+        wind_started = datetime.datetime.now()
         GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
         GPIO.output(HOUSE2_GPIO, GPIO.HIGH)
         GPIO.output(HOUSE3_GPIO, GPIO.HIGH)
@@ -415,8 +422,7 @@ def main():
 
     # Record a timer for th Pi Output check, as we only want to run that loop every 0.5 seconds
     last_time = datetime.datetime.now()
-    water_started = datetime.datetime.now()
-    wind_started = datetime.datetime.now()
+
     while running:
         if pygame_movie.active == True:
             if pygame_movie.draw(pygame_screen, (0, 0), force_draw=False):

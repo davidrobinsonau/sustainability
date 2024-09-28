@@ -220,6 +220,7 @@ def workflow_engine():
         # Display that houses have no power.
         pygame_screen.blit(pygame_images["sunset"], (1921, 0))
         pygame_screen.blit(pygame_images["sunsetcontrols"], (1921, 0))
+        pygame.display.update()
     elif SOLAR == 1 and WATER == 0 and WIND == 0:
         # print("Half Power - Turn 3 houses lights OFF")
         GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
@@ -228,6 +229,7 @@ def workflow_engine():
         GPIO.output(HOUSE4_GPIO, GPIO.LOW)
         pygame_screen.blit(pygame_images["sunshadebg"], (1921, 0))
         pygame_screen.blit(pygame_images["sunshade"], (1921, 0))
+        pygame.display.update()
     elif SOLAR == 2 and WATER == 0 and WIND == 0:
         # print("We have SUN - Turn all houses lights ON")
         GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
@@ -236,6 +238,7 @@ def workflow_engine():
         GPIO.output(HOUSE4_GPIO, GPIO.HIGH)
         pygame_screen.blit(pygame_images["sunoutbg"], (1921, 0))
         pygame_screen.blit(pygame_images["sunout"], (1921, 0))
+        pygame.display.update()
     elif WATER == 1:
         # print("Hydro Power - Turn 2 houses lights ON")
         GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
@@ -244,6 +247,7 @@ def workflow_engine():
         GPIO.output(HOUSE4_GPIO, GPIO.HIGH)
         pygame_screen.blit(pygame_images["hydrobg"], (1921, 0))
         pygame_screen.blit(pygame_images["hydro"], (1921, 0))
+        pygame.display.update()
         # Set the Relay for Water Motors GPIO Pins to LOW
         GPIO.output(WATER_GPIO, GPIO.LOW)
         pygame_sounds["hydro"].play()
@@ -260,6 +264,7 @@ def workflow_engine():
         GPIO.output(HOUSE4_GPIO, GPIO.HIGH)
         pygame_screen.blit(pygame_images["windbg"], (1921, 0))
         pygame_screen.blit(pygame_images["wind"], (1921, 0))
+        pygame.display.update()
         # Set the Relay for Wind Motors GPIO Pins to LOW
         GPIO.output(WIND_GPIO, GPIO.LOW)
         pygame_sounds["wind"].play()

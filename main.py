@@ -252,7 +252,6 @@ def workflow_engine():
         GPIO.output(WATER_GPIO, GPIO.HIGH)
         WATER = 0
         pygame_sounds["hydro"].stop()
-        workflow_engine()
     elif WIND == 1:
         # print("Wind Power - Turn 1 house lights ON")
         GPIO.output(HOUSE1_GPIO, GPIO.HIGH)
@@ -269,8 +268,6 @@ def workflow_engine():
         GPIO.output(WIND_GPIO, GPIO.HIGH)
         WIND = 0
         pygame_sounds["wind"].stop()
-        workflow_engine()
-
     else:
         print("Ummmm")
 
@@ -456,7 +453,6 @@ def main():
                         # Code to handle "s" key press event
                         # Add your logic here
                         SOLAR = 2
-                        lights_workflow_engine()
         # print("Waiting... 1 second.")
         # time.sleep(0.1)
         pygame.time.wait(15)  # around 60 fps

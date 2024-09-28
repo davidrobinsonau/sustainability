@@ -440,12 +440,12 @@ def main():
             # Check the status of the PIN
             # Print out status of global variables
             # print(f"SOLAR: {SOLAR}, WATER: {WATER}, WIND: {WIND}")
-            # draw_text(
-            #    pygame_screen,
-            #    f"SOLAR: {SOLAR}, WATER: {WATER}, WIND: {WIND}",
-            #    2000,
-            #    140,
-            # )
+            draw_text(
+                pygame_screen,
+                f"SOLAR: {SOLAR}, WATER: {WATER}, WIND: {WIND}",
+                2000,
+                140,
+            )
             # Run the workflow engine to check the status of the GPIO and update the screen
             workflow_engine()
 

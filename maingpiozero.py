@@ -153,7 +153,6 @@ def workflow_engine():
         HOUSE4.off()
         pygame_screen.blit(pygame_images["sunset"], (1921, 0))
         pygame_screen.blit(pygame_images["sunsetcontrols"], (1921, 0))
-        pygame.display.update()
     elif SOLAR == 1 and WATER == 0 and WIND == 0:
         HOUSE1.on()
         HOUSE2.off()
@@ -161,7 +160,6 @@ def workflow_engine():
         HOUSE4.off()
         pygame_screen.blit(pygame_images["sunshadebg"], (1921, 0))
         pygame_screen.blit(pygame_images["sunshade"], (1921, 0))
-        pygame.display.update()
     elif SOLAR == 2 and WATER == 0 and WIND == 0:
         HOUSE1.on()
         HOUSE2.on()
@@ -169,7 +167,6 @@ def workflow_engine():
         HOUSE4.on()
         pygame_screen.blit(pygame_images["sunoutbg"], (1921, 0))
         pygame_screen.blit(pygame_images["sunout"], (1921, 0))
-        pygame.display.update()
     elif WATER == 1:
         if datetime.datetime.now() - water_started > datetime.timedelta(seconds=8):
             WATER_MOTOR.on()
@@ -182,7 +179,6 @@ def workflow_engine():
             HOUSE4.on()
             pygame_screen.blit(pygame_images["hydrobg"], (1921, 0))
             pygame_screen.blit(pygame_images["hydro"], (1921, 0))
-            pygame.display.update()
             WATER_MOTOR.off()
             pygame_sounds["hydro"].play()
     elif WIND == 1:
@@ -197,7 +193,6 @@ def workflow_engine():
             HOUSE4.on()
             pygame_screen.blit(pygame_images["windbg"], (1921, 0))
             pygame_screen.blit(pygame_images["wind"], (1921, 0))
-            pygame.display.update()
             WIND_MOTOR.off()
             pygame_sounds["wind"].play()
 
@@ -224,29 +219,6 @@ def wind_action():
     wind_started = datetime.datetime.now()
 
 
-def play_movie(movie, screen, position=(0, 0)):
-    """
-    Play the specified movie in a separate thread.
-    """
-    global video_playing
-    video_playing = True
-    movie.restart()  # Restart the movie from the beginning
-    print("Playing movie")
-    while movie.active and not stop_event.is_set():
-        print("Drawing movie")
-        if movie.draw(screen, position, force_draw=False):
-            pygame.display.update()
-        time.sleep(0.01)  # Small delay to prevent CPU overuse
-    movie.stop()
-    video_playing = False
-
-
-def play_movie_thread(movie, screen, position=(0, 0)):
-    # Create a separate thread for movie playback
-    movie_thread = threading.Thread(target=play_movie, args=(movie, screen, position))
-    movie_thread.start()
-
-
 def main():
     global pygame_screen, pygame_images, pygame_sounds, pygame_movies
 
@@ -256,7 +228,7 @@ def main():
     pygame_movies = load_movies()
     pygame_movie = pygame_movies["hydro"]
     # if pygame_movie.active == False:
-    play_movie_thread(pygame_movie, pygame_screen, (0, 0))
+    # play_movie_thread(pygame_movie, pygame_screen, (0, 0))
 
     SUNSET_BUTTON.when_pressed = sunrise_sunset_action
     SUNBEHIND_BUTTON.when_pressed = sunshade_action
@@ -276,11 +248,12 @@ def main():
                 running = False
 
         if pygame_movie.active == True:
-            if pygame_movie.draw(pygame_screen, (0, 0), force_draw=False):
-                pygame.display.update()
+            pygame_movie.draw(pygame_screen, (0, 0), force_draw=False)
 
-        pygame.time.wait(15)
-
+        pygame.display.update()
+        time.sleep(0.01)  # Small delay to prevent CPU overuse
+        # pygame.time.wait(15)
+    pygame_movie.stop()
     pygame.quit()
     sys.exit()
 

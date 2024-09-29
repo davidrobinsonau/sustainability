@@ -197,7 +197,12 @@ def workflow_engine():
             pygame_sounds["wind"].play()
 
 
-def sunrise_sunset_action():
+def sunout_action():
+    global SOLAR
+    SOLAR = 2
+
+
+def sunset_action():
     global SOLAR
     SOLAR = 0
 
@@ -231,8 +236,10 @@ def main():
     # if pygame_movie.active == False:
     # play_movie_thread(pygame_movie, pygame_screen, (0, 0))
 
-    SUNSET_BUTTON.when_pressed = sunrise_sunset_action
+    SUNSET_BUTTON.when_pressed = sunset_action
+    SUNSET_BUTTON.when_released = sunout_action
     SUNBEHIND_BUTTON.when_pressed = sunshade_action
+    SUNBEHIND_BUTTON.when_released = sunout_action
     BUTTON1.when_pressed = hydro_action
     BUTTON2.when_pressed = wind_action
 

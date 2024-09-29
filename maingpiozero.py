@@ -208,7 +208,8 @@ def sunshade_action():
 
 
 def hydro_action():
-    global WATER, water_started
+    global WATER, water_started, pygame_movie
+    pygame_movie.restart()  # Restart the movie from the beginning
     WATER = 1
     water_started = datetime.datetime.now()
 
@@ -220,7 +221,7 @@ def wind_action():
 
 
 def main():
-    global pygame_screen, pygame_images, pygame_sounds, pygame_movies
+    global pygame_screen, pygame_images, pygame_sounds, pygame_movie
 
     pygame_screen = setup_pygame()
     pygame_images = load_images()

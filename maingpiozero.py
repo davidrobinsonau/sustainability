@@ -37,6 +37,10 @@ WIND_MOTOR = OutputDevice(3, initial_value=True)  # Wind Turbine motor
 # Has STATE Changed?
 STATE_CHANGED = False
 
+# Shared variables for thread control
+stop_event = threading.Event()
+video_playing = False
+
 
 def load_images():
     images = {
@@ -219,6 +223,21 @@ def wind_action():
     wind_started = datetime.datetime.now()
 
 
+def play_movie(movie, screen, position=(0, 0)):
+    """
+    Play the specified movie in a separate thread.
+    """
+    global video_playing
+    video_playing = True
+    movie.restart()  # Restart the movie from the beginning
+    while movie.active and not stop_event.is_set():
+        if movie.draw(screen, position, force_draw=False):
+            pygame.display.update()
+        time.sleep(0.01)  # Small delay to prevent CPU overuse
+    movie.stop()
+    video_playing = False
+
+
 def main():
     global pygame_screen, pygame_images, pygame_sounds, pygame_movies
 
@@ -228,7 +247,7 @@ def main():
     pygame_movies = load_movies()
     pygame_movie = pygame_movies["hydro"]
     if pygame_movie.active == False:
-        pygame_movie.play()
+        play_movie(pygame_movie, pygame_screen, (0, 0))
 
     SUNSET_BUTTON.when_pressed = sunrise_sunset_action
     SUNBEHIND_BUTTON.when_pressed = sunshade_action

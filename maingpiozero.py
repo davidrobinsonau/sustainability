@@ -231,7 +231,9 @@ def play_movie(movie, screen, position=(0, 0)):
     global video_playing
     video_playing = True
     movie.restart()  # Restart the movie from the beginning
+    print("Playing movie")
     while movie.active and not stop_event.is_set():
+        print("Drawing movie")
         if movie.draw(screen, position, force_draw=False):
             pygame.display.update()
         time.sleep(0.01)  # Small delay to prevent CPU overuse

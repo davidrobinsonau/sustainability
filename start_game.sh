@@ -5,5 +5,6 @@
 cd /home/hive/Workspace/sustainability
 while true; do
     /home/hive/Workspace/sustainability/maingpiozero.py
+    sleep 5
 done
 

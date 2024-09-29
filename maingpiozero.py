@@ -220,11 +220,15 @@ def wind_action():
 
 
 def main():
-    global pygame_screen, pygame_images, pygame_sounds
+    global pygame_screen, pygame_images, pygame_sounds, pygame_movies
 
     pygame_screen = setup_pygame()
     pygame_images = load_images()
     pygame_sounds = load_sounds()
+    pygame_movies = load_movies()
+    pygame_movie = pygame_movies["hydro"]
+    if pygame_movie.active == False:
+        pygame_movie.play()
 
     SUNSET_BUTTON.when_pressed = sunrise_sunset_action
     SUNBEHIND_BUTTON.when_pressed = sunshade_action
@@ -242,6 +246,10 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT or event.type == pygame.KEYDOWN:
                 running = False
+
+        if pygame_movie.active == True:
+            if pygame_movie.draw(pygame_screen, (0, 0), force_draw=False):
+                pygame.display.update()
 
         pygame.time.wait(15)
 

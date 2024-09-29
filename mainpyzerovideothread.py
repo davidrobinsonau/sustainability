@@ -174,7 +174,8 @@ def sunshade_action():
 
 
 def hydro_action():
-    global WATER, water_started
+    global WATER, water_started, pygame_screen, pygame_movies
+    global video_playing
     if not video_playing:
         play_movie_thread(pygame_movies["hydro"], pygame_screen, (0, 0))
     WATER = 1

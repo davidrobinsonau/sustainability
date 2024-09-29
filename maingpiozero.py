@@ -199,12 +199,12 @@ def workflow_engine():
 
 def sunrise_sunset_action():
     global SOLAR
-    SOLAR = 0 if SUNSET_BUTTON.is_pressed else 2
+    SOLAR = 0
 
 
 def sunshade_action():
     global SOLAR
-    SOLAR = 1 if SUNBEHIND_BUTTON.is_pressed else 2
+    SOLAR = 1
 
 
 def hydro_action():

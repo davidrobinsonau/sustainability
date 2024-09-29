@@ -239,6 +239,12 @@ def play_movie(movie, screen, position=(0, 0)):
     video_playing = False
 
 
+def play_movie_thread(movie, screen, position=(0, 0)):
+    # Create a separate thread for movie playback
+    movie_thread = threading.Thread(target=play_movie, args=(movie, screen, position))
+    movie_thread.start()
+
+
 def main():
     global pygame_screen, pygame_images, pygame_sounds, pygame_movies
 
@@ -248,7 +254,7 @@ def main():
     pygame_movies = load_movies()
     pygame_movie = pygame_movies["hydro"]
     # if pygame_movie.active == False:
-    play_movie(pygame_movie, pygame_screen, (0, 0))
+    play_movie_thread(pygame_movie, pygame_screen, (0, 0))
 
     SUNSET_BUTTON.when_pressed = sunrise_sunset_action
     SUNBEHIND_BUTTON.when_pressed = sunshade_action

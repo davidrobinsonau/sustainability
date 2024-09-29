@@ -240,11 +240,7 @@ def main():
             workflow_engine()
 
         for event in pygame.event.get():
-            if (
-                event.type == pygame.QUIT
-                or event.type == pygame.KEYDOWN
-                and event.key == pygame.K_s
-            ):
+            if event.type == pygame.QUIT or event.type == pygame.KEYDOWN:
                 running = False
 
         pygame.time.wait(15)

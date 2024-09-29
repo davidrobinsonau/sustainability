@@ -98,7 +98,25 @@ def load_movies():
     return loaded_movies
 
 
+def FindDisplayDriver():
+    # "x11" won't go full screen on a Raspberry Pi
+    os.environ["SDL_VIDEO_WINDOW_POS"] = "0,0"
+    for driver in ["kmsdrm", "fbcon", "directfb", "svgalib", "x11"]:
+        if not os.getenv("SDL_VIDEODRIVER"):
+            os.putenv("SDL_VIDEODRIVER", driver)
+        try:
+            pygame.display.init()
+            return True
+        except pygame.error:
+            pass
+    return False
+
+
 def setup_pygame():
+    if not FindDisplayDriver():
+        print("Failed to initialise display driver")
+        sys.exit(1)
+    # Set the display to fullscreen
     pygame.init()
     info = pygame.display.Info()
     width = info.current_w
@@ -196,11 +214,7 @@ def main():
             workflow_engine()
 
         for event in pygame.event.get():
-            if (
-                event.type == pygame.QUIT
-                or event.type == pygame.KEYDOWN
-                and event.key == pygame.K_s
-            ):
+            if event.type == pygame.QUIT or event.type == pygame.KEYDOWN:
                 running = False
 
         pygame.time.wait(15)

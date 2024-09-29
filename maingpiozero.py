@@ -247,8 +247,8 @@ def main():
     pygame_sounds = load_sounds()
     pygame_movies = load_movies()
     pygame_movie = pygame_movies["hydro"]
-    if pygame_movie.active == False:
-        play_movie(pygame_movie, pygame_screen, (0, 0))
+    # if pygame_movie.active == False:
+    play_movie(pygame_movie, pygame_screen, (0, 0))
 
     SUNSET_BUTTON.when_pressed = sunrise_sunset_action
     SUNBEHIND_BUTTON.when_pressed = sunshade_action

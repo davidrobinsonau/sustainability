@@ -223,7 +223,9 @@ def sunshade_action():
 def hydro_action():
     global WATER, water_started, pygame_movie
     if pygame_movie.active == True:
-        pygame_movie.restart()  # Restart the movie from the beginning
+        # Only restart the threat if the movie is more than 8 seconds in
+        if pygame_movie.get_time() > 8000:
+            pygame_movie.restart()  # Restart the movie from the beginning
     WATER = 1
     water_started = datetime.datetime.now()
 

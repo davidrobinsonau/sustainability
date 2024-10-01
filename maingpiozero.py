@@ -263,18 +263,19 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT or event.type == pygame.KEYDOWN:
                 running = False
-            if event.key == pygame.K_h:
-                # Code to handle "h" key press event
-                # Hide the screen so that I can see the console
-                pygame.display.iconify()
-            if event.key == pygame.K_f:
-                # Code to handle "f" key press event
-                # Hide the screen so that I can see the console
-                pygame.display.toggle_fullscreen()
-            if event.key == pygame.K_d:
-                # Code to handle "d" key press event
-                # Hide the screen so that I can see the console
-                debugOn = not debugOn
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_h:
+                    # Code to handle "h" key press event
+                    # Hide the screen so that I can see the console
+                    pygame.display.iconify()
+                if event.key == pygame.K_f:
+                    # Code to handle "f" key press event
+                    # Hide the screen so that I can see the console
+                    pygame.display.toggle_fullscreen()
+                if event.key == pygame.K_d:
+                    # Code to handle "d" key press event
+                    # Hide the screen so that I can see the console
+                    debugOn = not debugOn
 
         if pygame_movie.active == True:
             pygame_movie.draw(pygame_screen, (0, 0), force_draw=False)

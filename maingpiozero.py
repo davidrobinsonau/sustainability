@@ -222,7 +222,8 @@ def sunshade_action():
 
 def hydro_action():
     global WATER, water_started, pygame_movie
-    pygame_movie.restart()  # Restart the movie from the beginning
+    if pygame_movie.active == True:
+        pygame_movie.restart()  # Restart the movie from the beginning
     WATER = 1
     water_started = datetime.datetime.now()
 

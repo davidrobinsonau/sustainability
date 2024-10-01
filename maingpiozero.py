@@ -96,6 +96,7 @@ def load_sounds():
         "wind": "sounds/wind.wav",
     }
     loaded_sounds = {}
+    pygame.mixer.init(buffer=4096)  # Increase buffer size if needed
     for name, sound_path in sounds.items():
         try:
             loaded_sound = pygame.mixer.Sound(sound_path)

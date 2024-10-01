@@ -261,7 +261,7 @@ def main():
             workflow_engine()
 
         for event in pygame.event.get():
-            if event.type == pygame.QUIT or event.type == pygame.KEYDOWN:
+            if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_h:
@@ -276,6 +276,10 @@ def main():
                     # Code to handle "d" key press event
                     # Hide the screen so that I can see the console
                     debugOn = not debugOn
+                if event.key == pygame.K_q:
+                    # Code to handle "q" key press event
+                    # Hide the screen so that I can see the console
+                    running = False
 
         if pygame_movie.active == True:
             pygame_movie.draw(pygame_screen, (0, 0), force_draw=False)

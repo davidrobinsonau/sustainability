@@ -139,6 +139,14 @@ def setup_pygame():
     return screen
 
 
+# Function to draw text on the screen in large font
+def draw_text(screen, text, x, y):
+    font = pygame.font.Font(None, 96)
+    text = font.render(text, 1, (255, 255, 255))
+    screen.blit(text, (x, y))
+    # pygame.display.flip()
+
+
 water_started = datetime.datetime.now()
 wind_started = datetime.datetime.now()
 
@@ -244,6 +252,7 @@ def main():
     BUTTON2.when_pressed = wind_action
 
     running = True
+    debugOn = False
     last_time = datetime.datetime.now()
 
     while running:
@@ -254,9 +263,26 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT or event.type == pygame.KEYDOWN:
                 running = False
+            if event.key == pygame.K_h:
+                # Code to handle "h" key press event
+                # Hide the screen so that I can see the console
+                pygame.display.iconify()
+            if event.key == pygame.K_f:
+                # Code to handle "f" key press event
+                # Hide the screen so that I can see the console
+                pygame.display.toggle_fullscreen()
+            if event.key == pygame.K_d:
+                # Code to handle "d" key press event
+                # Hide the screen so that I can see the console
+                debugOn = not debugOn
 
         if pygame_movie.active == True:
             pygame_movie.draw(pygame_screen, (0, 0), force_draw=False)
+
+        if debugOn:
+            draw_text(pygame_screen, "SOLAR: " + str(SOLAR), 2000, 10)
+            draw_text(pygame_screen, "WATER: " + str(WATER), 2000, 100)
+            draw_text(pygame_screen, "WIND: " + str(WIND), 2000, 200)
 
         pygame.display.update()
         time.sleep(0.01)  # Small delay to prevent CPU overuse

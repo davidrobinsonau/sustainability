@@ -468,6 +468,14 @@ def main():
                         # Code to handle "s" key press event
                         # Add your logic here
                         SOLAR = 2
+                    if event.key == pygame.K_h:
+                        # Code to handle "h" key press event
+                        # Hide the screen so that I can see the console
+                        pygame.display.iconify()
+                    if event.key == pygame.K_f:
+                        # Code to handle "f" key press event
+                        # Hide the screen so that I can see the console
+                        pygame.display.toggle_fullscreen()
         # print("Waiting... 1 second.")
         # time.sleep(0.1)
         pygame.time.wait(15)  # around 60 fps

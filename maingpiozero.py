@@ -24,6 +24,8 @@ SUNSET_BUTTON = Button(20)
 SUNBEHIND_BUTTON = Button(21)
 BUTTON1 = Button(19)
 BUTTON2 = Button(26)
+LEFT_STOP_SENSOR = Button(16, pull_up=True)
+RIGHT_STOP_SENSOR = Button(12, pull_up=True)
 
 # LEDs for houses
 HOUSE1 = LED(1)
@@ -254,6 +256,10 @@ def main():
     SUNBEHIND_BUTTON.when_released = sunout_action
     BUTTON1.when_pressed = hydro_action
     BUTTON2.when_pressed = wind_action
+    LEFT_STOP_SENSOR.when_pressed = lambda: print("Left Stop Sensor Pressed")
+    LEFT_STOP_SENSOR.when_released = lambda: print("Left Stop Sensor Released")
+    RIGHT_STOP_SENSOR.when_pressed = lambda: print("Right Stop Sensor Pressed")
+    RIGHT_STOP_SENSOR.when_released = lambda: print("Right Stop Sensor Released")
 
     running = True
     debugOn = False

@@ -96,6 +96,7 @@ def load_sounds():
     sounds = {
         "hydro": "sounds/waterfallmono.wav",
         "wind": "sounds/wind.wav",
+        "owl": "sounds/owl-hooting.wav",
     }
     loaded_sounds = {}
     pygame.mixer.init(buffer=4096)  # Increase buffer size if needed
@@ -214,8 +215,9 @@ def sunout_action():
 
 
 def sunset_action():
-    global SOLAR
+    global SOLAR, pygame_screen, pygame_images, pygame_sounds
     SOLAR = 0
+    pygame_sounds["owl"].play()
 
 
 def sunshade_action():

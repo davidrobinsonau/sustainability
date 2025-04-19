@@ -24,8 +24,8 @@ SUNSET_BUTTON = Button(20)
 SUNBEHIND_BUTTON = Button(21)
 BUTTON1 = Button(19)
 BUTTON2 = Button(26)
-LEFT_STOP_SENSOR = Button(16, pull_up=True)
-RIGHT_STOP_SENSOR = Button(12, pull_up=True)
+LEFT_STOP_SENSOR = Button(12, pull_up=True, bounce_time=0.5)
+RIGHT_STOP_SENSOR = Button(16, pull_up=True, bounce_time=0.5)
 
 # LEDs for houses
 HOUSE1 = LED(1)

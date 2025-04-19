@@ -212,6 +212,7 @@ def workflow_engine():
 def sunout_action():
     global SOLAR
     SOLAR = 2
+    pygame_sounds["night"].stop()
 
 
 def sunset_action():

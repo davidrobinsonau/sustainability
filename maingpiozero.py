@@ -61,6 +61,8 @@ def load_images():
         "hydrobg": "images/renewableenergybg08.jpg",
         "wind": "images/renewableenergy05.png",
         "windbg": "images/renewableenergybg05.jpg",
+        "turnleft": "images/turnleft.png",
+        "turnright": "images/turnright.png",
     }
     loaded_images = {}
     for name, image_path in images.items():
@@ -148,6 +150,23 @@ def draw_text(screen, text, x, y):
     font = pygame.font.Font(None, 96)
     text = font.render(text, 1, (255, 255, 255))
     screen.blit(text, (x, y))
+    # pygame.display.flip()
+
+
+# Draw Turn Left and Turn Right images in the center of the screen
+def draw_turn_left_image():
+    global pygame_screen, pygame_images
+    turn_left_image = pygame_images["turnleft"]
+    turn_left_rect = turn_left_image.get_rect(center=(960, 540))
+    pygame_screen.blit(turn_left_image, turn_left_rect)
+    # pygame.display.flip()
+
+
+def draw_turn_right_image():
+    global pygame_screen, pygame_images
+    turn_right_image = pygame_images["turnright"]
+    turn_right_rect = turn_right_image.get_rect(center=(960, 540))
+    pygame_screen.blit(turn_right_image, turn_right_rect)
     # pygame.display.flip()
 
 
@@ -259,9 +278,9 @@ def main():
     SUNBEHIND_BUTTON.when_released = sunout_action
     BUTTON1.when_pressed = hydro_action
     BUTTON2.when_pressed = wind_action
-    LEFT_STOP_SENSOR.when_pressed = lambda: print("Left Stop Sensor Pressed")
+    LEFT_STOP_SENSOR.when_pressed = draw_turn_left_image
     LEFT_STOP_SENSOR.when_released = lambda: print("Left Stop Sensor Released")
-    RIGHT_STOP_SENSOR.when_pressed = lambda: print("Right Stop Sensor Pressed")
+    RIGHT_STOP_SENSOR.when_pressed = draw_turn_right_image
     RIGHT_STOP_SENSOR.when_released = lambda: print("Right Stop Sensor Released")
 
     running = True

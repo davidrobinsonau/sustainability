@@ -229,15 +229,24 @@ def workflow_engine():
 
 
 def sunout_action():
-    global SOLAR
+    global SOLAR, stop_event
     SOLAR = 2
+    stop_event.set()  # Signal the stop_event to stop any ongoing threads
     pygame_sounds["night"].stop()
 
 
 def sunset_action():
-    global SOLAR, pygame_screen, pygame_images, pygame_sounds
+    global SOLAR, pygame_screen, pygame_images, pygame_sounds, stop_event
+
     SOLAR = 0
-    pygame_sounds["night"].play()
+
+    def play_night_sound():
+        while not stop_event.is_set():
+            pygame_sounds["night"].play()
+            time.sleep(pygame_sounds["night"].get_length())
+
+    stop_event.clear()  # Clear the stop_event before starting the thread
+    threading.Thread(target=play_night_sound, daemon=True).start()
 
 
 def sunshade_action():

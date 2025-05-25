@@ -61,8 +61,8 @@ def load_images():
         "hydrobg": "images/renewableenergybg08.jpg",
         "wind": "images/renewableenergy05.png",
         "windbg": "images/renewableenergybg05.jpg",
-        "turnleft": "images/turnleft.png",
-        "turnright": "images/turnright.png",
+        "turnright": "images/turnleft.png",
+        "turnleft": "images/turnright.png",
     }
     loaded_images = {}
     for name, image_path in images.items():

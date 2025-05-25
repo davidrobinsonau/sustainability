@@ -157,7 +157,7 @@ def draw_text(screen, text, x, y):
 def draw_turn_left_image():
     global pygame_screen, pygame_images
     turn_left_image = pygame_images["turnleft"]
-    turn_left_rect = turn_left_image.get_rect(center=(960, 540))
+    turn_left_rect = turn_left_image.get_rect(center=(1921 + 960, 540))
     pygame_screen.blit(turn_left_image, turn_left_rect)
     # pygame.display.flip()
 
@@ -165,7 +165,7 @@ def draw_turn_left_image():
 def draw_turn_right_image():
     global pygame_screen, pygame_images
     turn_right_image = pygame_images["turnright"]
-    turn_right_rect = turn_right_image.get_rect(center=(960, 540))
+    turn_right_rect = turn_right_image.get_rect(center=(1921 + 960, 540))
     pygame_screen.blit(turn_right_image, turn_right_rect)
     # pygame.display.flip()
 

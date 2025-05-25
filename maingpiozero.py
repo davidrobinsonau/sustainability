@@ -236,7 +236,7 @@ def sunout_action():
 
 
 def sunset_action():
-    global SOLAR, pygame_screen, pygame_images, pygame_sounds, stop_event, night_sound_thread
+    global SOLAR, pygame_screen, pygame_images, pygame_sounds, stop_event
 
     SOLAR = 0
 
@@ -245,7 +245,8 @@ def sunset_action():
             pygame_sounds["night"].play()
             time.sleep(pygame_sounds["night"].get_length())
 
-    if not stop_event.is_set() and (
+    # Ensure the thread is started only if it is not already running
+    if (
         not hasattr(sunset_action, "night_sound_thread")
         or not sunset_action.night_sound_thread.is_alive()
     ):

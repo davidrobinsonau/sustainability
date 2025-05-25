@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3 -u
 
 import time
 import datetime
@@ -242,19 +242,22 @@ def sunset_action():
 
     def play_night_sound():
         while not stop_event.is_set():
+            print("Playing night sound...")
             pygame_sounds["night"].play()
             time.sleep(pygame_sounds["night"].get_length())
 
-    # Ensure the thread is started only if it is not already running
     if (
         not hasattr(sunset_action, "night_sound_thread")
         or not sunset_action.night_sound_thread.is_alive()
     ):
-        stop_event.clear()  # Clear the stop_event before starting the thread
+        print("Starting night sound thread...")
+        stop_event.clear()
         sunset_action.night_sound_thread = threading.Thread(
             target=play_night_sound, daemon=True
         )
         sunset_action.night_sound_thread.start()
+    else:
+        print("Night sound thread is already running.")
 
 
 def sunshade_action():

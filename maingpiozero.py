@@ -1,4 +1,4 @@
-#!/usr/bin/env python3 -u
+#!/usr/bin/env python3
 
 import time
 import datetime
@@ -258,6 +258,8 @@ def sunset_action():
         sunset_action.night_sound_thread.start()
     else:
         print("Night sound thread is already running.")
+
+    sys.stdout.flush()
 
 
 def sunshade_action():

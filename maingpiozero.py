@@ -20,8 +20,8 @@ WATER = 0  # 0 = No Water, 1 = LOW Water, 2 = Full Water
 WIND = 0  # 0 = No Wind, 1 = LOW Wind, 2 = Full Wind
 
 # Define GPIO pins using gpiozero components
-SUNSET_BUTTON = Button(20)
-SUNBEHIND_BUTTON = Button(21)
+SUNSET_BUTTON = Button(20, pull_up=True, bounce_time=0.5)
+SUNBEHIND_BUTTON = Button(21, pull_up=True, bounce_time=0.5)
 BUTTON1 = Button(19)
 BUTTON2 = Button(26)
 LEFT_STOP_SENSOR = Button(12, pull_up=True, bounce_time=0.5)

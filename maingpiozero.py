@@ -153,6 +153,36 @@ def draw_text(screen, text, x, y):
     # pygame.display.flip()
 
 
+# set global variables to track the state of the left and right stop sensors
+LEFT_STATE_CHANGED = False
+RIGHT_STATE_CHANGED = False
+
+
+# Two functions to set a global variable to True or False when the left or right stop sensors are pressed or released
+def left_stop_sensor_pressed():
+    global LEFT_STATE_CHANGED
+    LEFT_STATE_CHANGED = True
+    print("Left Stop Sensor Pressed")
+
+
+def left_stop_sensor_released():
+    global LEFT_STATE_CHANGED
+    LEFT_STATE_CHANGED = False
+    print("Left Stop Sensor Released")
+
+
+def right_stop_sensor_pressed():
+    global RIGHT_STATE_CHANGED
+    RIGHT_STATE_CHANGED = True
+    print("Right Stop Sensor Pressed")
+
+
+def right_stop_sensor_released():
+    global RIGHT_STATE_CHANGED
+    RIGHT_STATE_CHANGED = False
+    print("Right Stop Sensor Released")
+
+
 # Draw Turn Left and Turn Right images in the center of the screen
 def draw_turn_left_image():
     global pygame_screen, pygame_images
@@ -227,6 +257,14 @@ def workflow_engine():
             WIND_MOTOR.off()
             pygame_sounds["wind"].play()
 
+    # Check the state of the left and right stop sensors. As we need to redraw after each workflow run.
+    if LEFT_STATE_CHANGED:
+        # draw the turn left image
+        draw_turn_left_image()
+    if RIGHT_STATE_CHANGED:
+        # draw the turn right image
+        draw_turn_right_image()
+
 
 def sunout_action():
     global SOLAR, stop_event
@@ -300,10 +338,10 @@ def main():
     SUNBEHIND_BUTTON.when_released = sunout_action
     BUTTON1.when_pressed = hydro_action
     BUTTON2.when_pressed = wind_action
-    LEFT_STOP_SENSOR.when_pressed = draw_turn_left_image
-    LEFT_STOP_SENSOR.when_released = lambda: print("Left Stop Sensor Released")
-    RIGHT_STOP_SENSOR.when_pressed = draw_turn_right_image
-    RIGHT_STOP_SENSOR.when_released = lambda: print("Right Stop Sensor Released")
+    LEFT_STOP_SENSOR.when_pressed = left_stop_sensor_pressed
+    LEFT_STOP_SENSOR.when_released = left_stop_sensor_released
+    RIGHT_STOP_SENSOR.when_pressed = right_stop_sensor_pressed
+    RIGHT_STOP_SENSOR.when_released = right_stop_sensor_released
 
     running = True
     debugOn = False

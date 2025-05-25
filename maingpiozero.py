@@ -321,6 +321,10 @@ def main():
                     # Code to handle "q" key press event
                     # Hide the screen so that I can see the console
                     running = False
+                if event.key == pygame.K_s:
+                    # Code to handle "s" key press event
+                    # Stop playing the crickets sound.
+                    pygame_sounds["night"].stop()
 
         if pygame_movie.active == True:
             pygame_movie.draw(pygame_screen, (0, 0), force_draw=False)
